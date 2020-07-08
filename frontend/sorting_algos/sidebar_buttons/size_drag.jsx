@@ -1,8 +1,8 @@
 import React from 'react';
 
 const SizeDrag = () => (
-    <div>
-
+    <div className="sizedrag">
+        Size
     </div>
 )
 

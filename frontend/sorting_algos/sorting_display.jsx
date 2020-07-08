@@ -8,7 +8,7 @@ export default class SortingDisplay extends React.Component {
         super(props);
         this.state = {
             size: 20,
-            arr: new Array(20),
+            arr: this.init_arr(20),
             comparer: null,
             compare_to: null, 
             algo: "select"
@@ -22,6 +22,7 @@ export default class SortingDisplay extends React.Component {
         this.insertion_sort = this.insertion_sort.bind(this);
         this.sort = this.sort.bind(this);
         this.merge_sort = this.merge_sort.bind(this);
+        this.init_arr = this.init_arr.bind(this);
     }
 
     set_algo(newalgo) {
@@ -30,14 +31,29 @@ export default class SortingDisplay extends React.Component {
 
     set_size(size){
         this.state.size = size;
-        this.state.arr = new Array(size);
-        this.fill_arr_rand();
+        this.state.arr = init_arr(size);
+        this.setState({ arr: this.state.arr });
+    }
+
+    init_arr(size) {
+        let my_arr = [];
+        for(let i=1; i<=size; i++) {
+            my_arr.push(i);
+        }
+        //fisher-yates shuffle
+        for(let i=size - 1; i>0; i--) {
+            let rand = Math.random() * i | 0;
+            let temp=my_arr[i];
+            my_arr[i] = my_arr[rand];
+            my_arr[rand] = temp;
+        }
+        return my_arr;
     }
 
     fill_arr_rand() {
         let size = this.state.size;
         for(let i=1; i<=size; i++) {
-            this.state.arr = arr[i - 1] = i;
+            this.state.arr[i - 1] = i;
         }
         //fisher-yates shuffle
         for(let i=size - 1; i>0; i--) {
@@ -80,7 +96,7 @@ export default class SortingDisplay extends React.Component {
         let sortable = true;
         while(sortable) {
             sortable = false;
-            for(let i=0; i<this.state.size - 2; i++) {
+            for(let i=0; i<this.state.size - 1; i++) {
                 this.setState({ comparer: i, compare_to: i + 1 });
                 if(this.state.arr[i] > this.state.arr[i + 1]) {
                     this.swap_indeces(i, i+1);
@@ -164,7 +180,7 @@ export default class SortingDisplay extends React.Component {
             <div>
                 <Array arr={this.state.arr} comp={this.state.comparer} comp_to={this.state.compare_to}/>
                 <Graph arr={this.state.arr} comp={this.state.comparer} comp_to={this.state.compare_to}/>
-                <Sidebar size={this.state.size} sort={this.sort} algo={this.state.algo} setalgo={this.set_algo}/>
+                <Sidebar size={this.state.size} sort={this.sort} algo={this.state.algo} setalgo={this.set_algo} rand={this.fill_arr_rand}/>
             </div>
         )
     }

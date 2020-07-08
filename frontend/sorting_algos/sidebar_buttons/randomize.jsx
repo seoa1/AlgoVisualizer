@@ -1,8 +1,8 @@
 import React from 'react';
 
-const Randomize = () => (
-    <div>
-
+const Randomize = ({ rand }) => (
+    <div className="randomize" onClick={rand}>
+        Randomize
     </div>
 )
 

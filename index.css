@@ -1,0 +1,68 @@
+.sidebar {
+    box-sizing: border-box;
+    position: fixed;
+    left: 80vw;
+    top: 5vw;
+    width: 15vw;
+    background-color: greenyellow;
+    padding: 1vw;
+    font-size: 2vw;
+}
+
+.randomize {
+    background-color: white;
+    padding: 1vw;
+    margin: 2px;
+    cursor: pointer;
+}
+
+.sizedrag {
+    background-color: white;
+    padding: 1vw;
+    margin: 2px;
+}
+
+.sort {
+    background-color: white;
+    padding: 1vw;
+    margin: 2px;
+    cursor: pointer;
+}
+
+.shower {
+    cursor: pointer;
+}
+
+.array {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    font-size: 1vw;
+}
+
+.arraytile {
+    width: 2vw;
+    height: 2vw;
+    border: 1px solid black;
+    text-align: center;
+    line-height: 2vw;
+}
+
+.comparer {
+    border: 1px solid purple
+}
+
+.compareto {
+    border: 1px solid red
+}
+
+.graph {
+    display: flex;
+    flex-direction: row;
+}
+
+.graphline {
+    background-color: blue;
+    margin: 2px;
+    width: 5px;
+}

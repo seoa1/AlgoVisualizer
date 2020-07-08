@@ -7,8 +7,14 @@ export default class Graph extends React.Component {
 
     render() {
         return(
-            <div>
-                
+            <div className="graph">
+                {
+                    this.props.arr.map( (ele, idx) => {
+                        return (
+                            <div className="graphline" key={idx} style={{height: (3 * ele).toString()+"vh"}}></div>
+                        )
+                    })
+                }
             </div>
         )
     }
