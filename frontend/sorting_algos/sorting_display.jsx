@@ -12,8 +12,8 @@ export default class SortingDisplay extends React.Component {
             comparer: null,
             compare_to: null, 
             algo: "select",
-            min: null,
-            anim_arr: []
+            min: null
+
         }
         this.set_algo = this.set_algo.bind(this);
         this.set_size = this.set_size.bind(this);
@@ -25,18 +25,12 @@ export default class SortingDisplay extends React.Component {
         this.sort = this.sort.bind(this);
         this.merge_sort = this.merge_sort.bind(this);
         this.init_arr = this.init_arr.bind(this);
-        this.init_anim_arr = this.init_anim_arr.bind(this);
-        this.swap_anim_indeces = this.swap_anim_indeces.bind(this);
+        this.sleep = this.sleep.bind(this);
+
     }
 
-    componentDidMount() {
-        this.init_anim_arr();
-    }
-
-    init_anim_arr(){
-        this.state.anim_arr = [];
-        this.state.arr.forEach(ele => this.state.anim_arr.push(ele));
-        this.setState({anim_arr: this.state.anim_arr});
+    sleep(msec) {
+        return new Promise(resolve => setTimeout(resolve, msec));
     }
 
     set_algo(newalgo) {
@@ -75,7 +69,6 @@ export default class SortingDisplay extends React.Component {
             this.swap_indeces(rand, i);
         }
         this.setState({ size: this.state.size, arr: this.state.arr });
-        this.init_anim_arr();
     }
 
     swap_indeces(idx1, idx2) {
@@ -84,16 +77,8 @@ export default class SortingDisplay extends React.Component {
         this.state.arr[idx2] = temp;
     }
 
-    swap_anim_indeces(idx1, idx2) {
-        let temp = this.state.anim_arr[idx1];
-        this.state.anim_arr[idx1] = this.state.anim_arr[idx2];
-        this.state.anim_arr[idx2] = temp;
-    }
-
     //sorting algorithms below
-    selection_sort() {
-        let to_compare = []; // idx1 = comparer, idx2 = compare_to, idx3 = min_idx
-        let to_swap = [];
+    async selection_sort() {
         for(let i=0; i<this.state.size - 1; i++) {
             let min = 0;
             let min_idx = i;
@@ -107,76 +92,42 @@ export default class SortingDisplay extends React.Component {
                         min_idx = j;
                     }
                 }
-                to_compare.push([i, j, min_idx])
+                this.setState({comparer: i, compare_to: j});
+                await this.sleep(10);
             }
             this.swap_indeces(i, min_idx);
-            to_swap.push([i, min_idx]);
             this.setState({ arr: this.state.arr });
         }
-
-        //animations
-        let i=0;
-        let j=0;
-        let compare_interv = setInterval(() => {
-            if(i >= to_compare.length) {
-                clearInterval(compare_interv);
-            }
-            else {
-                this.setState({comparer: to_compare[i][0], compare_to: to_compare[i][1], min: to_compare[i][2]});
-                if(to_compare[i][0] != j || i == to_compare.length - 1) {
-                    this.swap_anim_indeces(...to_swap[j]);
-                    j++;
-                }
-                this.setState({anim_arr: this.state.anim_arr});
-                i++;
-            }
-        },10)
     }
 
 
-    bubble_sort() {
+    async bubble_sort() {
         this.setState({min: null});
-        let to_compare = []; // idx1 = comparer, idx2 = compare_to, idx3 = true if swap, false otherwise
         let sortable = true;
         while(sortable) {
             sortable = false;
             for(let i=0; i<this.state.size - 1; i++) {
                 if(this.state.arr[i] > this.state.arr[i + 1]) {
                     this.swap_indeces(i, i+1);
-                    to_compare.push([i, i+1, true]);
+                    this.setState({comparer: i, compare_to: i + 1});
                     sortable = true;
                 }
                 else {
                     to_compare.push([i, i+1, false]);
+                    this.setState({comparer: i, compare_to: i + 1});
                 }
+                await this.sleep(10);
             }
         }
-
-        //animations
-        let i=0;
-        let compare_interv = setInterval(() => {
-            if(i >= to_compare.length) {
-                clearInterval(compare_interv);
-            }
-            else {
-                this.setState({comparer: to_compare[i][0], compare_to: to_compare[i][1]});
-                if(to_compare[i][2]) {
-                    this.swap_anim_indeces(to_compare[i][0], to_compare[i][1]);
-                }
-            }
-            this.setState({anim_arr: this.state.anim_arr});
-            i++;
-        }, 10);
+        this.setState({arr: this.state.arr});
     }
 
-    insertion_sort() {
+    async insertion_sort() {
         this.setState({min: null});
-        let to_compare = []; // idx1 = comparer, idx2 = compare_to, idx3 = true if insert, false otherwise
         for(let i=1; i<this.state.size; i++) {
             let num = this.state.arr[i];
             for(let j= i - 1; j>=-1; j--) {
                 if(j==-1) {
-                    to_compare.push([i, j, true]);
                     for(let k=i - 1; k>=0; k--) {
                         this.state.arr[k + 1] = this.state.arr[k]; 
                     }
@@ -184,78 +135,54 @@ export default class SortingDisplay extends React.Component {
                 }
                 else {
                     if(num > this.state.arr[j]) {
-                        to_compare.push([i, j, true])
                         for(let k=i - 1; k>j; k--) {
                             this.state.arr[k + 1] = this.state.arr[k];
                         }
                         this.state.arr[j + 1] = num;
                         break;
                     }
-                    else {
-                        to_compare.push([i, j, false]);
-                    }
+                    
                 }
+                this.setState({comparer: i, compare_to: j});
+                await this.sleep(10);
             }
             this.setState({ arr: this.state.arr });
         }
-
-        //animations
-        let i = 0;
-        let compare_interv = setInterval(() => {
-            if(i >= to_compare.length) {
-                clearInterval(compare_interv);
-            }
-            else {
-                let cr = to_compare[i][0];
-                let cto = to_compare[i][1];
-                let insert = to_compare[i][2];
-                if(cto === -1) {
-                    let num = this.state.anim_arr[cr];
-                    for(let k=cr - 1; k>cto; k--) {
-                        this.state.anim_arr[k + 1] = this.state.anim_arr[k];
-                    }
-                    this.state.anim_arr[cto + 1] = num;
-                }
-                else {
-                    this.setState({comparer: cr, compare_to: cto});
-                    if(insert) {
-                        let num = this.state.anim_arr[cr];
-                        for(let k=cr - 1; k>cto; k--) {
-                            this.state.anim_arr[k + 1] = this.state.anim_arr[k];
-                        }
-                        this.state.anim_arr[cto + 1] = num;
-                    }
-                }
-            }
-            this.setState({anim_arr: this.state.anim_arr});
-            i++;
-        }, 20);
     }
 
-    // make this sort in a single array. recursive solutions should pass in indeces in array. use three pointers.
-    merge_sort(arr) {
-        if(arr.length > 1) {
-            let mid = arr.length / 2 | 0;
-            let left = arr.slice(0, mid);
-            let right = arr.slice(mid, arr.length);
-            this.merge_sort(left);
-            this.merge_sort(right);
-            let i = 0;
-            let j = 0;
-            let k = 0;
+    async merge_sort(l_idx, r_idx) {
+        if(l_idx < r_idx) {
+            let mid_idx = (l_idx + r_idx) / 2 | 0;
+            await this.merge_sort(l_idx, mid_idx);
+            await this.merge_sort(mid_idx+1, r_idx);
+            let left = this.state.arr.slice(l_idx, mid_idx + 1);
+            let right = this.state.arr.slice(mid_idx + 1, r_idx + 1);
+            let i = 0
+            let j = 0
+            let k = l_idx;
             while(i < left.length || j < right.length) {
+                this.setState({ comparer: i + k, compare_to: mid_idx + 1 + j });
                 if((j >= right.length && i < left.length) || left[i] < right[j]) {
-                    arr[k] = left[i];
+                    for(let m = l_idx + j; m > k; m--) {
+                        this.state.arr[m] = this.state.arr[m - 1];
+                    }
+                    this.state.arr[k] = left[i];
                     i++;
                 }
                 else {
-                    arr[k] = right[j];
+                    for(let m = mid_idx + 1 + j; m > k; m--) {
+                        this.state.arr[m] = this.state.arr[m - 1];
+                    }
+                    this.state.arr[k] = right[j];
                     j++;
                 }
                 this.setState({ arr: this.state.arr });
                 k++;
+                await this.sleep(30);
             }
+            
         }
+        this.setState({ arr: this.state.arr });
     }
 
     sort() {
@@ -269,6 +196,10 @@ export default class SortingDisplay extends React.Component {
             case "insert":
                 this.insertion_sort();
                 break;
+            case "merge":
+                this.setState({min: null});
+                this.merge_sort(0, this.state.arr.length - 1);
+                break;
             default:
                 break;
         }
@@ -278,8 +209,8 @@ export default class SortingDisplay extends React.Component {
         return( 
             <div className="display">
                 <div className="mainbody">
-                    <Array arr={this.state.anim_arr} comp={this.state.comparer} comp_to={this.state.compare_to}/>
-                    <Graph min={this.state.min} arr={this.state.anim_arr} comp={this.state.comparer} comp_to={this.state.compare_to}/>
+                    <Array arr={this.state.arr} comp={this.state.comparer} comp_to={this.state.compare_to}/>
+                    <Graph min={this.state.min} arr={this.state.arr} comp={this.state.comparer} comp_to={this.state.compare_to}/>
                 </div>
                 
                 <Sidebar size={this.state.size} sort={this.sort} algo={this.state.algo} setalgo={this.set_algo} rand={this.fill_arr_rand}/>

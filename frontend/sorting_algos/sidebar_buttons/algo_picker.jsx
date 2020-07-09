@@ -32,6 +32,9 @@ export default class AlgoPicker extends React.Component {
             case "insert":
                 algo_out = "Insertion Sort";
                 break;
+            case "merge":
+                algo_out = "Merge Sort";
+                break;
             default:
                 algo_out = "Algo not found";
                 break;
