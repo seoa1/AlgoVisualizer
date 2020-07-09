@@ -78,8 +78,21 @@ export default class SortingDisplay extends React.Component {
         this.init_anim_arr();
     }
 
+    swap_indeces(idx1, idx2) {
+        let temp = this.state.arr[idx1];
+        this.state.arr[idx1] = this.state.arr[idx2];
+        this.state.arr[idx2] = temp;
+    }
+
+    swap_anim_indeces(idx1, idx2) {
+        let temp = this.state.anim_arr[idx1];
+        this.state.anim_arr[idx1] = this.state.anim_arr[idx2];
+        this.state.anim_arr[idx2] = temp;
+    }
+
+    //sorting algorithms below
     selection_sort() {
-        let to_compare = [];
+        let to_compare = []; // idx1 = comparer, idx2 = compare_to, idx3 = min_idx
         let to_swap = [];
         for(let i=0; i<this.state.size - 1; i++) {
             let min = 0;
@@ -120,57 +133,103 @@ export default class SortingDisplay extends React.Component {
         },10)
     }
 
-    swap_indeces(idx1, idx2) {
-        let temp = this.state.arr[idx1];
-        this.state.arr[idx1] = this.state.arr[idx2];
-        this.state.arr[idx2] = temp;
-    }
-
-    swap_anim_indeces(idx1, idx2) {
-        let temp = this.state.anim_arr[idx1];
-        this.state.anim_arr[idx1] = this.state.anim_arr[idx2];
-        this.state.anim_arr[idx2] = temp;
-    }
 
     bubble_sort() {
+        this.setState({min: null});
+        let to_compare = []; // idx1 = comparer, idx2 = compare_to, idx3 = true if swap, false otherwise
         let sortable = true;
         while(sortable) {
             sortable = false;
             for(let i=0; i<this.state.size - 1; i++) {
-                this.setState({comparer: i, compare_to: i+1})
                 if(this.state.arr[i] > this.state.arr[i + 1]) {
                     this.swap_indeces(i, i+1);
-                    this.setState({ arr: this.state.arr });
+                    to_compare.push([i, i+1, true]);
                     sortable = true;
+                }
+                else {
+                    to_compare.push([i, i+1, false]);
                 }
             }
         }
+
+        //animations
+        let i=0;
+        let compare_interv = setInterval(() => {
+            if(i >= to_compare.length) {
+                clearInterval(compare_interv);
+            }
+            else {
+                this.setState({comparer: to_compare[i][0], compare_to: to_compare[i][1]});
+                if(to_compare[i][2]) {
+                    this.swap_anim_indeces(to_compare[i][0], to_compare[i][1]);
+                }
+            }
+            this.setState({anim_arr: this.state.anim_arr});
+            i++;
+        }, 10);
     }
 
     insertion_sort() {
+        this.setState({min: null});
+        let to_compare = []; // idx1 = comparer, idx2 = compare_to, idx3 = true if insert, false otherwise
         for(let i=1; i<this.state.size; i++) {
             let num = this.state.arr[i];
-            this.setState({ comparer: i });
             for(let j= i - 1; j>=-1; j--) {
                 if(j==-1) {
+                    to_compare.push([i, j, true]);
                     for(let k=i - 1; k>=0; k--) {
                         this.state.arr[k + 1] = this.state.arr[k]; 
                     }
                     this.state.arr[0] = num;
                 }
                 else {
-                    this.setState({ compare_to: j });
                     if(num > this.state.arr[j]) {
+                        to_compare.push([i, j, true])
                         for(let k=i - 1; k>j; k--) {
                             this.state.arr[k + 1] = this.state.arr[k];
                         }
                         this.state.arr[j + 1] = num;
                         break;
                     }
+                    else {
+                        to_compare.push([i, j, false]);
+                    }
                 }
             }
             this.setState({ arr: this.state.arr });
         }
+
+        //animations
+        let i = 0;
+        let compare_interv = setInterval(() => {
+            if(i >= to_compare.length) {
+                clearInterval(compare_interv);
+            }
+            else {
+                let cr = to_compare[i][0];
+                let cto = to_compare[i][1];
+                let insert = to_compare[i][2];
+                if(cto === -1) {
+                    let num = this.state.anim_arr[cr];
+                    for(let k=cr - 1; k>cto; k--) {
+                        this.state.anim_arr[k + 1] = this.state.anim_arr[k];
+                    }
+                    this.state.anim_arr[cto + 1] = num;
+                }
+                else {
+                    this.setState({comparer: cr, compare_to: cto});
+                    if(insert) {
+                        let num = this.state.anim_arr[cr];
+                        for(let k=cr - 1; k>cto; k--) {
+                            this.state.anim_arr[k + 1] = this.state.anim_arr[k];
+                        }
+                        this.state.anim_arr[cto + 1] = num;
+                    }
+                }
+            }
+            this.setState({anim_arr: this.state.anim_arr});
+            i++;
+        }, 20);
     }
 
     // make this sort in a single array. recursive solutions should pass in indeces in array. use three pointers.
