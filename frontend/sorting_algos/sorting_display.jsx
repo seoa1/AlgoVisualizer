@@ -11,7 +11,9 @@ export default class SortingDisplay extends React.Component {
             arr: this.init_arr(20),
             comparer: null,
             compare_to: null, 
-            algo: "select"
+            algo: "select",
+            min: null,
+            anim_arr: []
         }
         this.set_algo = this.set_algo.bind(this);
         this.set_size = this.set_size.bind(this);
@@ -23,6 +25,18 @@ export default class SortingDisplay extends React.Component {
         this.sort = this.sort.bind(this);
         this.merge_sort = this.merge_sort.bind(this);
         this.init_arr = this.init_arr.bind(this);
+        this.init_anim_arr = this.init_anim_arr.bind(this);
+        this.swap_anim_indeces = this.swap_anim_indeces.bind(this);
+    }
+
+    componentDidMount() {
+        this.init_anim_arr();
+    }
+
+    init_anim_arr(){
+        this.state.anim_arr = [];
+        this.state.arr.forEach(ele => this.state.anim_arr.push(ele));
+        this.setState({anim_arr: this.state.anim_arr});
     }
 
     set_algo(newalgo) {
@@ -61,29 +75,49 @@ export default class SortingDisplay extends React.Component {
             this.swap_indeces(rand, i);
         }
         this.setState({ size: this.state.size, arr: this.state.arr });
+        this.init_anim_arr();
     }
 
     selection_sort() {
+        let to_compare = [];
+        let to_swap = [];
         for(let i=0; i<this.state.size - 1; i++) {
-            this.setState({ comparer: i });
             let min = 0;
             let min_idx = i;
-            for(let j=i; j<this.state.size; j++) {
-                this.setState({ compare_to: j });
+            for(let j=i ; j<this.state.size; j++) { 
                 if(j == i) {
                     min = this.state.arr[j];
                 }
                 else {
                     if(this.state.arr[j] < min) {
-                        this.setState({ comparer: j });
                         min = this.state.arr[j];
                         min_idx = j;
                     }
                 }
+                to_compare.push([i, j, min_idx])
             }
             this.swap_indeces(i, min_idx);
+            to_swap.push([i, min_idx]);
             this.setState({ arr: this.state.arr });
         }
+
+        //animations
+        let i=0;
+        let j=0;
+        let compare_interv = setInterval(() => {
+            if(i >= to_compare.length) {
+                clearInterval(compare_interv);
+            }
+            else {
+                this.setState({comparer: to_compare[i][0], compare_to: to_compare[i][1], min: to_compare[i][2]});
+                if(to_compare[i][0] != j || i == to_compare.length - 1) {
+                    this.swap_anim_indeces(...to_swap[j]);
+                    j++;
+                }
+                this.setState({anim_arr: this.state.anim_arr});
+                i++;
+            }
+        },10)
     }
 
     swap_indeces(idx1, idx2) {
@@ -92,12 +126,18 @@ export default class SortingDisplay extends React.Component {
         this.state.arr[idx2] = temp;
     }
 
+    swap_anim_indeces(idx1, idx2) {
+        let temp = this.state.anim_arr[idx1];
+        this.state.anim_arr[idx1] = this.state.anim_arr[idx2];
+        this.state.anim_arr[idx2] = temp;
+    }
+
     bubble_sort() {
         let sortable = true;
         while(sortable) {
             sortable = false;
             for(let i=0; i<this.state.size - 1; i++) {
-                this.setState({ comparer: i, compare_to: i + 1 });
+                this.setState({comparer: i, compare_to: i+1})
                 if(this.state.arr[i] > this.state.arr[i + 1]) {
                     this.swap_indeces(i, i+1);
                     this.setState({ arr: this.state.arr });
@@ -179,8 +219,8 @@ export default class SortingDisplay extends React.Component {
         return( 
             <div className="display">
                 <div className="mainbody">
-                    <Array arr={this.state.arr} comp={this.state.comparer} comp_to={this.state.compare_to}/>
-                    <Graph arr={this.state.arr} comp={this.state.comparer} comp_to={this.state.compare_to}/>
+                    <Array arr={this.state.anim_arr} comp={this.state.comparer} comp_to={this.state.compare_to}/>
+                    <Graph min={this.state.min} arr={this.state.anim_arr} comp={this.state.comparer} comp_to={this.state.compare_to}/>
                 </div>
                 
                 <Sidebar size={this.state.size} sort={this.sort} algo={this.state.algo} setalgo={this.set_algo} rand={this.fill_arr_rand}/>

@@ -62,9 +62,13 @@
     border: 1px solid purple
 }
 
+
+
 .compareto {
     border: 1px solid red
 }
+
+
 
 .graph {
     display: flex;
@@ -77,6 +81,17 @@
     background-color: blue;
     margin: 1px;
     width: 2vw;
+}
+
+#comparerline {
+    background-color: purple;
+}
+#minline {
+    background-color: green;
+}
+
+#comparetoline {
+    background-color: red;
 }
 
 .header {
