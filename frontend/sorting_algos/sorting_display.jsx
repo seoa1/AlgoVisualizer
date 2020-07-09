@@ -177,9 +177,12 @@ export default class SortingDisplay extends React.Component {
 
     render() {
         return( 
-            <div>
-                <Array arr={this.state.arr} comp={this.state.comparer} comp_to={this.state.compare_to}/>
-                <Graph arr={this.state.arr} comp={this.state.comparer} comp_to={this.state.compare_to}/>
+            <div className="display">
+                <div className="mainbody">
+                    <Array arr={this.state.arr} comp={this.state.comparer} comp_to={this.state.compare_to}/>
+                    <Graph arr={this.state.arr} comp={this.state.comparer} comp_to={this.state.compare_to}/>
+                </div>
+                
                 <Sidebar size={this.state.size} sort={this.sort} algo={this.state.algo} setalgo={this.set_algo} rand={this.fill_arr_rand}/>
             </div>
         )

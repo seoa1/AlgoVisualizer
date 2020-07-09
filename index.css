@@ -1,12 +1,19 @@
 .sidebar {
     box-sizing: border-box;
-    position: fixed;
-    left: 80vw;
-    top: 5vw;
-    width: 15vw;
+    width: 25vw;
     background-color: greenyellow;
     padding: 1vw;
     font-size: 2vw;
+}
+
+.display {
+    display: flex;
+    flex-direction: row;
+}
+
+.mainbody {
+    background-color: beige;
+    width: 75vw;
 }
 
 .randomize {
@@ -36,8 +43,10 @@
 .array {
     display: flex;
     flex-direction: row;
-    width: 100%;
+    width: 40vw;
     font-size: 1vw;
+    margin: auto;
+    height: 6vh;
 }
 
 .arraytile {
@@ -46,6 +55,7 @@
     border: 1px solid black;
     text-align: center;
     line-height: 2vw;
+    margin: auto;
 }
 
 .comparer {
@@ -59,10 +69,16 @@
 .graph {
     display: flex;
     flex-direction: row;
+    width: 40vw;
+    margin: 0 auto;
 }
 
 .graphline {
     background-color: blue;
-    margin: 2px;
-    width: 5px;
+    margin: 1px;
+    width: 2vw;
+}
+
+.header {
+    height: 10vh;
 }

@@ -6,9 +6,9 @@ import AlgoPicker from './sidebar_buttons/algo_picker';
 
 const Sidebar = ({ size, sort, algo, setalgo, rand }) => (
     <div className="sidebar">
+        <SortButton sort={sort}/>
         <Randomize rand={rand}/>
         <SizeDrag size={size}/>
-        <SortButton sort={sort}/>
         <AlgoPicker algo={algo} setalgo={setalgo}/>
     </div>
 )
