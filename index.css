@@ -97,3 +97,7 @@
 .header {
     height: 10vh;
 }
+
+.dropdown {
+    cursor: pointer;
+}

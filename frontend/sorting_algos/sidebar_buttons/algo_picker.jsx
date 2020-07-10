@@ -35,6 +35,15 @@ export default class AlgoPicker extends React.Component {
             case "merge":
                 algo_out = "Merge Sort";
                 break;
+            case "quick":
+                algo_out = "Quick Sort";
+                break;
+            case "heap":
+                algo_out = "Heap Sort";
+                break;
+            case "shell":
+                algo_out = "Shell Sort";
+                break;
             default:
                 algo_out = "Algo not found";
                 break;
