@@ -33,6 +33,7 @@ export default class SortingDisplay extends React.Component {
         this.heapify = this.heapify.bind(this);
         this.shell_sort = this.shell_sort.bind(this);
         this.clear_compares = this.clear_compares.bind(this);
+        this.nearly_sorted_arr = this.nearly_sorted_arr.bind(this);
     }
 
     clear_compares() {
@@ -66,6 +67,18 @@ export default class SortingDisplay extends React.Component {
             my_arr[rand] = temp;
         }
         return my_arr;
+    }
+
+    async nearly_sorted_arr() {
+        await this.setState({stop: true});
+        let size = this.state.size;
+        this.state.arr = [];
+        for(let i=1; i<=size; i++) {
+            this.state.arr.push(i);
+        }
+        let rand_idx = (Math.random() * size * 0.25) | 0;
+        this.swap_indeces(rand_idx, this.state.arr.length - rand_idx - 1);
+        this.setState({ arr: this.state.arr, sorting: false })
     }
 
     async fill_arr_rand() {
@@ -361,7 +374,7 @@ export default class SortingDisplay extends React.Component {
                     <Graph size={this.state.size} min={this.state.min} arr={this.state.arr} comp={this.state.comparer} comp_to={this.state.compare_to}/>
                 </div>
                 
-                <Sidebar sorting={this.state.sorting} size={this.state.size} setsize={this.set_size} sort={this.sort} algo={this.state.algo} setalgo={this.set_algo} rand={this.fill_arr_rand}/>
+                <Sidebar nearly={this.nearly_sorted_arr} sorting={this.state.sorting} size={this.state.size} setsize={this.set_size} sort={this.sort} algo={this.state.algo} setalgo={this.set_algo} rand={this.fill_arr_rand}/>
             </div>
         )
     }

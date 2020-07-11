@@ -22,13 +22,17 @@
     width: 100%;
 }
 
-.randomize {
+.randomize,
+.nearly,
+.sort {
     background-color: white;
     padding: 15px;
     margin: 2px;
     cursor: pointer;
     box-sizing: border-box;
 }
+
+
 
 .sizedrag {
     background-color: white;
@@ -39,12 +43,7 @@
 
 }
 
-.sort {
-    background-color: white;
-    padding: 15px;
-    margin: 2px;
-    cursor: pointer;
-}
+
 
 .shower {
     cursor: pointer;
@@ -99,6 +98,7 @@
     height: 10px;
     border-radius: 100%;
     background-color: black;
+    cursor: pointer;
 }
 
 .sidebar div .dragline {
@@ -108,3 +108,4 @@
     height: 2px;
     top: 6px;
 }
+
