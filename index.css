@@ -6,6 +6,11 @@
     font-size: 2vw;
 }
 
+.sidebar div {
+    width: 23vw;
+    box-sizing: border-box;
+}
+
 .display {
     display: flex;
     flex-direction: row;
@@ -21,12 +26,17 @@
     padding: 1vw;
     margin: 2px;
     cursor: pointer;
+    box-sizing: border-box;
 }
 
 .sizedrag {
     background-color: white;
     padding: 1vw;
     margin: 2px;
+    position: relative;
+    width: 20vw;
+    box-sizing: border-box;
+
 }
 
 .sort {
@@ -73,12 +83,12 @@
 .graph {
     display: flex;
     flex-direction: row;
-    width: 40vw;
+    width: 60vw;
     margin: 0 auto;
 }
 
 .graphline {
-    background-color: blue;
+    background-color: lightblue;
     margin: 1px;
     width: 2vw;
 }
@@ -100,4 +110,11 @@
 
 .dropdown {
     cursor: pointer;
+}
+
+.sidebar div .dragcircle {
+    width: 1vw;
+    height: 1vw;
+    border-radius: 100%;
+    background-color: blue;
 }

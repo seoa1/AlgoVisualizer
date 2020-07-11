@@ -12,8 +12,10 @@ export default class SortingDisplay extends React.Component {
             comparer: null,
             compare_to: null, 
             algo: "select",
-            min: null
-
+            min: null,
+            wait: 20,
+            stop: false,
+            sorting: false
         }
         this.set_algo = this.set_algo.bind(this);
         this.set_size = this.set_size.bind(this);
@@ -30,8 +32,11 @@ export default class SortingDisplay extends React.Component {
         this.heap_sort = this.heap_sort.bind(this);
         this.heapify = this.heapify.bind(this);
         this.shell_sort = this.shell_sort.bind(this);
+        this.clear_compares = this.clear_compares.bind(this);
+    }
 
-        this.wait = 10;
+    clear_compares() {
+        this.setState({comparer: null, compare_to: null, min: null});
     }
 
     sleep(msec) {
@@ -44,8 +49,8 @@ export default class SortingDisplay extends React.Component {
 
     set_size(size){
         this.state.size = size;
-        this.state.arr = init_arr(size);
-        this.setState({ arr: this.state.arr });
+        this.state.arr = this.init_arr(size);
+        this.setState({ arr: this.state.arr, wait: (200 / (size ** 2)), stop: true, sorting: false});
     }
 
     init_arr(size) {
@@ -63,17 +68,11 @@ export default class SortingDisplay extends React.Component {
         return my_arr;
     }
 
-    fill_arr_rand() {
+    async fill_arr_rand() {
+        await this.setState({stop: true});
         let size = this.state.size;
-        for(let i=1; i<=size; i++) {
-            this.state.arr[i - 1] = i;
-        }
-        //fisher-yates shuffle
-        for(let i=size - 1; i>0; i--) {
-            let rand = Math.random() * i | 0;
-            this.swap_indeces(rand, i);
-        }
-        this.setState({ size: this.state.size, arr: this.state.arr });
+        this.state.arr = this.init_arr(size);
+        this.setState({ size: this.state.size, arr: this.state.arr, sorting: false });
     }
 
     swap_indeces(idx1, idx2) {
@@ -97,8 +96,12 @@ export default class SortingDisplay extends React.Component {
                         min_idx = j;
                     }
                 }
+                if(this.state.stop) {
+                    this.clear_compares();
+                    return;
+                }
                 this.setState({comparer: i, compare_to: j, min: min_idx});
-                await this.sleep(this.wait);
+                await this.sleep(this.state.wait);
             }
             this.swap_indeces(i, min_idx);
             this.setState({ arr: this.state.arr });
@@ -110,9 +113,15 @@ export default class SortingDisplay extends React.Component {
     async bubble_sort() {
         this.setState({min: null});
         let sortable = true;
+        let j = this.state.size - 1;
         while(sortable) {
             sortable = false;
-            for(let i=0; i<this.state.size - 1; i++) {
+            if(this.state.stop) {
+                this.clear_compares();
+                return;
+            }
+            for(let i=0; i<j; i++) {
+                
                 if(this.state.arr[i] > this.state.arr[i + 1]) {
                     this.swap_indeces(i, i+1);
                     this.setState({comparer: i, compare_to: i + 1});
@@ -121,8 +130,13 @@ export default class SortingDisplay extends React.Component {
                 else {
                     this.setState({comparer: i, compare_to: i + 1});
                 }
-                await this.sleep(10);
+                if(this.state.stop) {
+                    this.clear_compares();
+                    return;
+                }
+                await this.sleep(this.state.wait);
             }
+            j--;
         }
         this.setState({arr: this.state.arr, comparer: null, compare_to: null});
     }
@@ -131,7 +145,12 @@ export default class SortingDisplay extends React.Component {
         this.setState({min: null});
         for(let i=1; i<this.state.size; i++) {
             let num = this.state.arr[i];
+            
             for(let j= i - 1; j>=-1; j--) {
+                if(this.state.stop) {
+                    this.clear_compares();
+                    return;
+                }
                 if(j==-1) {
                     for(let k=i - 1; k>=0; k--) {
                         this.state.arr[k + 1] = this.state.arr[k]; 
@@ -149,7 +168,7 @@ export default class SortingDisplay extends React.Component {
                     
                 }
                 this.setState({comparer: i, compare_to: j});
-                await this.sleep(this.wait);
+                await this.sleep(this.state.wait);
             }
             this.setState({ arr: this.state.arr });
         }
@@ -158,6 +177,10 @@ export default class SortingDisplay extends React.Component {
 
     async merge_sort(l_idx, r_idx) {
         if(l_idx < r_idx) {
+            if(this.state.stop) {
+                this.clear_compares();
+                return;
+            }
             let mid_idx = (l_idx + r_idx) / 2 | 0;
             await this.merge_sort(l_idx, mid_idx);
             await this.merge_sort(mid_idx+1, r_idx);
@@ -167,6 +190,9 @@ export default class SortingDisplay extends React.Component {
             let j = 0
             let k = l_idx;
             while(i < left.length || j < right.length) {
+                if(this.state.stop) {
+                    return;
+                }
                 this.setState({ comparer: i + k, compare_to: mid_idx + 1 + j });
                 if((j >= right.length && i < left.length) || left[i] < right[j]) {
                     for(let m = l_idx + j; m > k; m--) {
@@ -184,7 +210,7 @@ export default class SortingDisplay extends React.Component {
                 }
                 this.setState({ arr: this.state.arr });
                 k++;
-                await this.sleep(1.5 * this.wait);
+                await this.sleep(1.5 * this.state.wait);
             }
             
         }
@@ -193,11 +219,15 @@ export default class SortingDisplay extends React.Component {
 
     async quick_sort(l_idx, r_idx) {
         if(l_idx < r_idx) {
+            if(this.state.stop) {
+                this.clear_compares();
+                return;
+            }
             let pivot = this.state.arr[r_idx];
             let i = l_idx - 1;
             for(let j = l_idx; j <= r_idx; j++) {
                 this.setState({comparer: pivot, compare_to: j, arr: this.state.arr});
-                await this.sleep(this.wait * 2);
+                await this.sleep(this.state.wait * 2);
                 if(this.state.arr[j] < pivot) {
                     i++;
                     this.swap_indeces(i, j);
@@ -212,13 +242,23 @@ export default class SortingDisplay extends React.Component {
     }
 
     async heap_sort() {
+        
         for(let i = (this.state.arr.length / 2 | 0) - 1; i>=0 ; i--) {
             await this.heapify(i, this.state.arr.length);
+            if(this.state.stop) {
+                this.clear_compares();
+                return;
+            }
             this.setState({arr: this.state.arr});
         }
         for(let i = this.state.arr.length - 1; i > 0; i--) {
             this.swap_indeces(0, i);
+            //await this.sleep(this.state.wait);
             await this.heapify(0, i);
+            if(this.state.stop) {
+                this.clear_compares();
+                return;
+            }
         }
         this.setState({arr: this.state.arr, comparer: null, compare_to: null});
         
@@ -233,15 +273,15 @@ export default class SortingDisplay extends React.Component {
         if(l_idx < n && this.state.arr[max] < this.state.arr[l_idx]) {
             max = l_idx;
         }
-        await this.sleep(this.wait * 1);
         this.setState({compare_to: r_idx});
+        await this.sleep(this.state.wait);
         if(r_idx < n && this.state.arr[max] < this.state.arr[r_idx]) {
             max = r_idx;
         }
         if(max != root) {
             this.swap_indeces(root, max);
             this.setState({arr: this.state.arr});
-            await this.sleep(this.wait * 1);
+            
             await this.heapify(max, n);
         }
     }
@@ -254,8 +294,13 @@ export default class SortingDisplay extends React.Component {
                 let temp = this.state.arr[i];
                 let j = i;
                 while(j >= gap && this.state.arr[j - gap] > temp) {
+                    
                     this.setState({comparer: j, compare_to: j - gap});
-                    await this.sleep(this.wait * 3);
+                    await this.sleep(this.state.wait * 3);
+                    if(this.state.stop) {
+                        this.clear_compares();
+                        return;
+                    }
                     this.state.arr[j] = this.state.arr[j - gap];
                     j -= gap;
                 }
@@ -266,35 +311,41 @@ export default class SortingDisplay extends React.Component {
         this.setState({arr: this.state.arr, comparer: null, compare_to: null});
     }
 
-    sort() {
+    async sort() {
+        await this.setState({stop: false});
+        if(this.state.sorting) {
+            return;
+        }
+        this.setState({sorting: true});
         switch (this.state.algo) {
             case "select":
-                this.selection_sort();
+                await this.selection_sort();
                 break;
             case "bubble":
-                this.bubble_sort();
+                await this.bubble_sort();
                 break;
             case "insert":
-                this.insertion_sort();
+                await this.insertion_sort();
                 break;
             case "merge":
                 this.setState({min: null});
-                this.merge_sort(0, this.state.arr.length - 1);
+                await this.merge_sort(0, this.state.arr.length - 1);
                 break;
             case "quick":
                 this.setState({min: null});
-                this.quick_sort(0, this.state.arr.length - 1);
+                await this.quick_sort(0, this.state.arr.length - 1);
                 break;
             case "heap":
                 this.setState({min: null});
-                this.heap_sort();
+                await this.heap_sort();
                 break;
             case "shell":
-                this.shell_sort();
+                await this.shell_sort();
                 break;
             default:
                 break;
-        }
+        };
+        this.setState({sorting: false});
         
     }
 
@@ -302,11 +353,11 @@ export default class SortingDisplay extends React.Component {
         return( 
             <div className="display">
                 <div className="mainbody">
-                    <Array arr={this.state.arr} comp={this.state.comparer} comp_to={this.state.compare_to}/>
-                    <Graph min={this.state.min} arr={this.state.arr} comp={this.state.comparer} comp_to={this.state.compare_to}/>
+                    <Array size={this.state.size} arr={this.state.arr} comp={this.state.comparer} comp_to={this.state.compare_to}/>
+                    <Graph size={this.state.size} min={this.state.min} arr={this.state.arr} comp={this.state.comparer} comp_to={this.state.compare_to}/>
                 </div>
                 
-                <Sidebar size={this.state.size} sort={this.sort} algo={this.state.algo} setalgo={this.set_algo} rand={this.fill_arr_rand}/>
+                <Sidebar size={this.state.size} setsize={this.set_size} sort={this.sort} algo={this.state.algo} setalgo={this.set_algo} rand={this.fill_arr_rand}/>
             </div>
         )
     }

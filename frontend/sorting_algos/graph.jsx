@@ -21,7 +21,7 @@ export default class Graph extends React.Component {
                             add_class = "minline";
                         }
                         return (
-                            <div className={"graphline"} id={add_class} key={idx} style={{height: (3 * ele).toString()+"vh"}}></div>
+                            <div className={"graphline"} id={add_class} key={idx} style={{height: (60 * ele / this.props.size).toString()+"vh", width: (60 / this.props.size).toString() + "vw"}}></div>
                         )
                     })
                 }

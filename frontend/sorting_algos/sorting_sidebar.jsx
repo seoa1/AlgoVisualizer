@@ -4,11 +4,12 @@ import SizeDrag from './sidebar_buttons/size_drag';
 import SortButton from './sidebar_buttons/sort_button';
 import AlgoPicker from './sidebar_buttons/algo_picker';
 
-const Sidebar = ({ size, sort, algo, setalgo, rand }) => (
+const Sidebar = ({ size, sort, algo, setalgo, rand, setsize }) => (
     <div className="sidebar">
         <SortButton sort={sort}/>
         <Randomize rand={rand}/>
-        <SizeDrag size={size}/>
+        <SizeDrag size={size} setsize={setsize}/>
+        
         <AlgoPicker algo={algo} setalgo={setalgo}/>
     </div>
 )
