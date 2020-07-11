@@ -50,7 +50,7 @@ export default class SortingDisplay extends React.Component {
     set_size(size){
         this.state.size = size;
         this.state.arr = this.init_arr(size);
-        this.setState({ arr: this.state.arr, wait: (4000 / (size ** 2)), stop: true, sorting: false});
+        this.setState({ arr: this.state.arr, wait: (8000 / (size ** 2)), stop: true, sorting: false});
     }
 
     init_arr(size) {
@@ -168,7 +168,7 @@ export default class SortingDisplay extends React.Component {
                     
                 }
                 this.setState({comparer: i, compare_to: j});
-                await this.sleep(this.state.wait);
+                await this.sleep(this.state.wait * 2);
             }
             this.setState({ arr: this.state.arr });
         }
@@ -358,7 +358,6 @@ export default class SortingDisplay extends React.Component {
         return( 
             <div className="display">
                 <div className="mainbody">
-                    <Array size={this.state.size} arr={this.state.arr} comp={this.state.comparer} comp_to={this.state.compare_to}/>
                     <Graph size={this.state.size} min={this.state.min} arr={this.state.arr} comp={this.state.comparer} comp_to={this.state.compare_to}/>
                 </div>
                 

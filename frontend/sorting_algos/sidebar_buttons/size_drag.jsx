@@ -32,10 +32,13 @@ export default class SizeDrag extends React.Component {
             <div>
                 <div className="sizedrag">
                     Size {(this.state.deltaPos.x + 60)/3 | 0}
+                    <div className="dragline"></div>
+
                     <Draggable bounds="parent" 
                         onDrag={this.handle_drag} 
                         axis="x">
                         <div className="dragcircle"></div>
+                        
                     </Draggable>
                 </div>
                 

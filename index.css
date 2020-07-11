@@ -1,13 +1,14 @@
 .sidebar {
     box-sizing: border-box;
-    width: 25vw;
+    width: 250px;
     background-color: greenyellow;
-    padding: 1vw;
-    font-size: 2vw;
+    padding: 10px;
+    font-size: 20px;
+    float: right;
 }
 
 .sidebar div {
-    width: 23vw;
+    width: 220px;
     box-sizing: border-box;
 }
 
@@ -18,12 +19,12 @@
 
 .mainbody {
     background-color: beige;
-    width: 75vw;
+    width: 100%;
 }
 
 .randomize {
     background-color: white;
-    padding: 1vw;
+    padding: 15px;
     margin: 2px;
     cursor: pointer;
     box-sizing: border-box;
@@ -31,41 +32,22 @@
 
 .sizedrag {
     background-color: white;
-    padding: 1vw;
+    padding: 15px;
     margin: 2px;
     position: relative;
-    width: 20vw;
     box-sizing: border-box;
 
 }
 
 .sort {
     background-color: white;
-    padding: 1vw;
+    padding: 15px;
     margin: 2px;
     cursor: pointer;
 }
 
 .shower {
     cursor: pointer;
-}
-
-.array {
-    display: flex;
-    flex-direction: row;
-    width: 40vw;
-    font-size: 1vw;
-    margin: auto;
-    height: 6vh;
-}
-
-.arraytile {
-    width: 2vw;
-    height: 2vw;
-    border: 1px solid black;
-    text-align: center;
-    line-height: 2vw;
-    margin: auto;
 }
 
 .comparer {
@@ -113,8 +95,16 @@
 }
 
 .sidebar div .dragcircle {
-    width: 1vw;
-    height: 1vw;
+    width: 10px;
+    height: 10px;
     border-radius: 100%;
-    background-color: blue;
+    background-color: black;
+}
+
+.sidebar div .dragline {
+    position: relative;
+    background-color: grey;
+    width: 180px;
+    height: 2px;
+    top: 6px;
 }
