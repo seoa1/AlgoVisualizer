@@ -50,7 +50,7 @@ export default class SortingDisplay extends React.Component {
     set_size(size){
         this.state.size = size;
         this.state.arr = this.init_arr(size);
-        this.setState({ arr: this.state.arr, wait: (200 / (size ** 2)), stop: true, sorting: false});
+        this.setState({ arr: this.state.arr, wait: (4000 / (size ** 2)), stop: true, sorting: false});
     }
 
     init_arr(size) {
@@ -228,6 +228,10 @@ export default class SortingDisplay extends React.Component {
             for(let j = l_idx; j <= r_idx; j++) {
                 this.setState({comparer: pivot, compare_to: j, arr: this.state.arr});
                 await this.sleep(this.state.wait * 2);
+                if(this.state.stop) {
+                    this.clear_compares();
+                    return;
+                }
                 if(this.state.arr[j] < pivot) {
                     i++;
                     this.swap_indeces(i, j);
@@ -314,6 +318,7 @@ export default class SortingDisplay extends React.Component {
     async sort() {
         await this.setState({stop: false});
         if(this.state.sorting) {
+            this.setState({stop: true});
             return;
         }
         this.setState({sorting: true});
@@ -357,7 +362,7 @@ export default class SortingDisplay extends React.Component {
                     <Graph size={this.state.size} min={this.state.min} arr={this.state.arr} comp={this.state.comparer} comp_to={this.state.compare_to}/>
                 </div>
                 
-                <Sidebar size={this.state.size} setsize={this.set_size} sort={this.sort} algo={this.state.algo} setalgo={this.set_algo} rand={this.fill_arr_rand}/>
+                <Sidebar sorting={this.state.sorting} size={this.state.size} setsize={this.set_size} sort={this.sort} algo={this.state.algo} setalgo={this.set_algo} rand={this.fill_arr_rand}/>
             </div>
         )
     }

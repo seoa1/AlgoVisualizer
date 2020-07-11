@@ -31,7 +31,7 @@ export default class SizeDrag extends React.Component {
         return (
             <div>
                 <div className="sizedrag">
-                    Size
+                    Size {(this.state.deltaPos.x + 60)/3 | 0}
                     <Draggable bounds="parent" 
                         onDrag={this.handle_drag} 
                         axis="x">
