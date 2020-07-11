@@ -11,7 +11,6 @@ const Sidebar = ({ size, sort, algo, setalgo, rand, setsize, sorting, nearly }) 
         <Randomize rand={rand}/>
         <NearlySorted nearly={nearly}/>
         <SizeDrag size={size} setsize={setsize}/>
-        
         <AlgoPicker algo={algo} setalgo={setalgo}/>
     </div>
 )

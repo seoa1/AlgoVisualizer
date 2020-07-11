@@ -1,7 +1,7 @@
 .sidebar {
     box-sizing: border-box;
     width: 250px;
-    background-color: greenyellow;
+    background-color: rgb(100, 100, 100);
     padding: 10px;
     font-size: 20px;
     float: right;
@@ -27,17 +27,19 @@
 .sort {
     background-color: white;
     padding: 15px;
-    margin: 2px;
+    margin: 5px;
     cursor: pointer;
     box-sizing: border-box;
 }
 
-
+.sort {
+    background-color: rgb(255, 218, 151);
+}
 
 .sizedrag {
-    background-color: white;
+    background-color: lightgrey;
     padding: 15px;
-    margin: 2px;
+    margin: 5px;
     position: relative;
     box-sizing: border-box;
 
@@ -109,3 +111,35 @@
     top: 6px;
 }
 
+.pickme {
+    background-color: white;
+    margin: 10px 5px 0px 5px;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.picker {
+    background-color: lightgrey;
+    margin: 0px 5px;
+    padding: 15px;
+    box-sizing: border-box;
+}
+.dropdown {
+    background-color: rgb(173, 173, 173);
+    margin: 0px 5px;
+    box-sizing: border-box;
+}
+.dropdown div {
+    padding: 8px 15px;
+    border: 1px solid lightgrey;
+    border-top: none;
+    font-size: 18px;
+}
+
+.up,
+.down {
+    width: 20px;
+    height: 10px;
+    position: relative;
+    top: 4px;
+}

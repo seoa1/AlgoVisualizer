@@ -7,7 +7,7 @@ const SortButton = ({sort, sorting}) => {
 
     return (
         <div className="sort" onClick={handle_click}>
-            {sorting ? "Stop" : "Sort"}
+            {sorting ? "STOP" : "SORT"}
         </div>
     )
 }
