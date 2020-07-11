@@ -8,6 +8,8 @@ export default class Display extends React.Component {
         this.state = {
             algo_category: "sorting"
         }
+
+        this.change_category = this.change_category.bind(this);
     }
 
     change_category(category) {
@@ -21,7 +23,8 @@ export default class Display extends React.Component {
                 {this.state.algo_category === "sorting" ? 
                     <SortingDisplay/> :
                     null}
-                
+                {this.state.algo_category === "traversal" ? null
+                    :null}
             </div>
         )
     }

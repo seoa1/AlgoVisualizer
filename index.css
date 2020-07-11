@@ -1,5 +1,11 @@
 .screen {
     font-family: "Roboto";
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    overflow: hidden;
 }
 
 .sidebar {
@@ -19,7 +25,7 @@
 .display {
     display: flex;
     flex-direction: row;
-    height: 85vh;
+    height: 100%;
     box-sizing: border-box;
 }
 
@@ -39,7 +45,7 @@
 }
 
 .sort {
-    background-color: rgb(255, 218, 151);
+    background-color: rgb(255, 201, 102);
 }
 
 .sizedrag {
@@ -104,6 +110,7 @@
     color: white;
     padding: 0vh 5vw;
     box-sizing: border-box;
+    width: 100%;
 }
 
 .dropdown {
@@ -162,26 +169,22 @@
 }
 
 .cat_sele{
-    width: 280px;
-    height: 100px;
     float: right;
     margin: 0vh 15vw;
     font-size: 20px;
     color: black;
     line-height: 48px;
     box-sizing: border-box;
-
-}
-
-.cat_sele div {
     width: 280px;
     height: 50px;
-    padding: 0px 15px;
-    box-sizing: border-box;
 }
 
 .cat_sele .cat_announce {
     background-color: white;
+    width: 280px;
+    height: 50px;
+    padding: 0px 15px;
+    box-sizing: border-box;
 }
 
 .cat_sele .cat_out {
@@ -194,7 +197,26 @@
 }
 
 .cat_shower {
+    width: 280px;
+    height: 50px;
+    padding: 0px 15px;
+    box-sizing: border-box;
     position: relative;
     bottom: 51px;
-    left: 210px;
+    left: 213px;
+}
+
+.cat_sele .cat_dropdown {
+    box-sizing: border-box;
+}
+
+.cat_sele .cat_dropdown div {
+    background-color: rgb(173, 173, 173);
+    position: relative;
+    border: 1px solid lightgrey;
+    border-top: none;
+    font-size: 18px;
+    box-sizing: border-box;
+    padding: 0px 15px;
+    cursor: pointer;
 }

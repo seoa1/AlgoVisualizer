@@ -13,7 +13,7 @@ export default class Header extends React.Component {
                 current_cat = "Sorting Algorithms";
                 break;
             case "traversal":
-                current_cat = "Traversal Algorithms";
+                current_cat = "BST Traversal Algorithms";
                 break;
             default:
                 break;

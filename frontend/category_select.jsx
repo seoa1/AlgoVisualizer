@@ -26,7 +26,7 @@ export default class CategorySelect extends React.Component {
                 cat_out = "Sorting Algorithms";
                 break;
             case "traversal":
-                cat_out = "Traversal Algorithms";
+                cat_out = "BST Traversal Algorithms";
                 break;
             default:
                 cat_out= "what";
@@ -46,8 +46,6 @@ export default class CategorySelect extends React.Component {
                         </div>
                     </div>
                     {this.state.show ? <CategoryDropdown change_cat={this.props.change_cat}/> : null}
-                    
-                    
             </div>
         
         )
