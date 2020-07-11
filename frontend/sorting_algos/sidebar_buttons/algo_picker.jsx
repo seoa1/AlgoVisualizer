@@ -58,9 +58,9 @@ export default class AlgoPicker extends React.Component {
         return (
             <div >
                 <div className="pickme">Pick an Algorithm!</div>
-                <div className="picker">
+                <div className="picker" onClick={this.click_dropdown}>
                     {algo_out}
-                    <div className="shower" onClick={this.click_dropdown}>
+                    <div className="shower" >
                         {this.state.show ? 
                         <img className="up" src="./images/up_arrow.png"/> :
                         <img className="down" src="./images/down_arrow.png"/>}

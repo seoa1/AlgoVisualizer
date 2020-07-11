@@ -46,6 +46,7 @@ export default class SortingDisplay extends React.Component {
 
     set_algo(newalgo) {
         this.setState({ algo: newalgo });
+        this.fill_arr_rand();
     }
 
     set_size(size){

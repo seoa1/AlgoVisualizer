@@ -1,3 +1,7 @@
+.screen {
+    font-family: "Roboto";
+}
+
 .sidebar {
     box-sizing: border-box;
     width: 250px;
@@ -15,6 +19,8 @@
 .display {
     display: flex;
     flex-direction: row;
+    height: 85vh;
+    box-sizing: border-box;
 }
 
 .mainbody {
@@ -48,7 +54,9 @@
 
 
 .shower {
-    cursor: pointer;
+    position: relative;
+    left: 165px;
+    bottom: 28px;
 }
 
 .comparer {
@@ -88,7 +96,14 @@
 }
 
 .header {
-    height: 10vh;
+    height: 100px;
+    background-color: rgb(124, 123, 123);
+    line-height: 100px;
+    text-align: left;
+    font-size: 50px;
+    color: white;
+    padding: 0vh 5vw;
+    box-sizing: border-box;
 }
 
 .dropdown {
@@ -123,6 +138,8 @@
     margin: 0px 5px;
     padding: 15px;
     box-sizing: border-box;
+    height: 55px;
+    cursor: pointer;
 }
 .dropdown {
     background-color: rgb(173, 173, 173);
@@ -142,4 +159,42 @@
     height: 10px;
     position: relative;
     top: 4px;
+}
+
+.cat_sele{
+    width: 280px;
+    height: 100px;
+    float: right;
+    margin: 0vh 15vw;
+    font-size: 20px;
+    color: black;
+    line-height: 48px;
+    box-sizing: border-box;
+
+}
+
+.cat_sele div {
+    width: 280px;
+    height: 50px;
+    padding: 0px 15px;
+    box-sizing: border-box;
+}
+
+.cat_sele .cat_announce {
+    background-color: white;
+}
+
+.cat_sele .cat_out {
+    background-color: lightgray;
+    width: 280px;
+    height: 50px;
+    box-sizing: border-box;
+    padding: 0px 15px;
+    cursor: pointer;
+}
+
+.cat_shower {
+    position: relative;
+    bottom: 51px;
+    left: 210px;
 }
