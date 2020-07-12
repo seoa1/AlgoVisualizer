@@ -1,15 +1,16 @@
 export default class Node {
-    constructor(val = 0, next = null) {
-        this._next = next;
+    constructor(val = 0, right = null, left = null) {
+        this._right = right;
         this._val = val;
+        this._left = left;
     }
 
-    get next() {
-        return this._next;
+    get right() {
+        return this._right;
     }
 
-    set next(next) {
-        this._next = next;
+    set right(right) {
+        this._right = right;
     }
 
     get val() {
@@ -18,5 +19,13 @@ export default class Node {
 
     set val(val) {
         this._val = val;
+    }
+
+    get left() {
+        return this._left;
+    }
+
+    set left(left) {
+        this._left = left;
     }
 }
