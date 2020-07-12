@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from './header';
 import SortingDisplay from './sorting_algos/sorting_display';
+import Tree from './traversal_algos/tree_display.jsx';
 
 export default class Display extends React.Component {
     constructor(props) {
@@ -23,7 +24,8 @@ export default class Display extends React.Component {
                 {this.state.algo_category === "sorting" ? 
                     <SortingDisplay/> :
                     null}
-                {this.state.algo_category === "traversal" ? null
+                {this.state.algo_category === "traversal" ? 
+                    <Tree />
                     :null}
             </div>
         )

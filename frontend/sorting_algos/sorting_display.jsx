@@ -207,9 +207,9 @@ export default class SortingDisplay extends React.Component {
                 if(this.state.stop) {
                     return;
                 }
-                this.setState({ comparer: i + k, compare_to: mid_idx + 1 + j });
+                this.setState({ comparer: i + l_idx + 1, compare_to: mid_idx + 2 + j });
                 if((j >= right.length && i < left.length) || left[i] < right[j]) {
-                    for(let m = l_idx + j; m > k; m--) {
+                    for(let m = l_idx + i; m > k; m--) {
                         this.state.arr[m] = this.state.arr[m - 1];
                     }
                     this.state.arr[k] = left[i];
@@ -224,7 +224,7 @@ export default class SortingDisplay extends React.Component {
                 }
                 this.setState({ arr: this.state.arr });
                 k++;
-                await this.sleep(1.5 * this.state.wait);
+                await this.sleep(3 * this.state.wait);
             }
             
         }

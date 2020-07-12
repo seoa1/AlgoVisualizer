@@ -1,4 +1,5 @@
 import React from 'react';
+import Draggable from 'react-draggable';
 
 export default class Node extends React.Component {
     constructor(props) {
@@ -12,7 +13,11 @@ export default class Node extends React.Component {
         this.handleDrag = this.handleDrag.bind(this);
     }
 
-    handleDrag = (e, ui) => {
+    get pos() {
+        return this.props.pos;
+    }
+
+    handleDrag(e, ui) {
         const {x, y} = this.state.deltaPosition;
         this.setState({
           deltaPosition: {
@@ -23,8 +28,10 @@ export default class Node extends React.Component {
       };
 
     render() {
+        let pos = this.props.pos;
         return (
-            <Draggable onDrag={this.handleDrag}>
+            <Draggable onDrag={this.handleDrag} 
+                positionOffset={{x: pos[0].toString()+"vw", y: ((pos[1] - 7)/1.3).toString()+"vh"}}>
                 <div className="node">
 
                 </div>
