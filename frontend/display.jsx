@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './header';
 import SortingDisplay from './sorting_algos/sorting_display';
 import Tree from './traversal_algos/tree_display.jsx';
+import Grid from './graphsearch_algos/grid';
 
 export default class Display extends React.Component {
     constructor(props) {
@@ -27,6 +28,9 @@ export default class Display extends React.Component {
                 {this.state.algo_category === "traversal" ? 
                     <Tree />
                     :null}
+                {this.state.algo_category === "graphsearch" ?
+                    <Grid />:
+                    null}
             </div>
         )
     }

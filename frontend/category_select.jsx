@@ -28,6 +28,9 @@ export default class CategorySelect extends React.Component {
             case "traversal":
                 cat_out = "BST Traversal Algorithms";
                 break;
+            case "graphsearch":
+                cat_out = "Graph Search Algorithms";
+                break;
             default:
                 cat_out= "what";
                 break;

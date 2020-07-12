@@ -274,3 +274,16 @@
     border-radius: 100%;
     position: absolute;
 }
+
+.square {
+    background-color: beige;
+    border: 1px solid grey;
+    width: 3vw;
+    height: 3vw;
+}
+
+.grid {
+    display: grid;
+    height: 100%;
+    width: 100%;
+}

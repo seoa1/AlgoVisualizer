@@ -32,7 +32,7 @@ export default class Node extends React.Component {
         return (
             <Draggable onDrag={this.handleDrag} 
                 positionOffset={{x: pos[0].toString()+"vw", y: ((pos[1] - 7)/1.3).toString()+"vh"}}>
-                <div className="node">
+                <div id={this.props.id} className="node">
 
                 </div>
             </Draggable>

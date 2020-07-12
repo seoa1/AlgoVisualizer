@@ -8,11 +8,15 @@ const CategoryDropdown = ({change_cat}) => {
         e.preventDefault();
         change_cat("traversal");
     }
+    const handle_click_g = (e) => {
+        e.preventDefault();
+        change_cat("graphsearch");
+    }
 
     return (
         <div className="cat_dropdown">
             <div onClick={handle_click_s}>Sorting Algorithms</div>
-            <div onClick={handle_click_t}>BST Traversal Algorithms</div>
+            <div onClick={handle_click_g}>Graph Search Algorithms</div>
         </div>
     )
 }
