@@ -42,10 +42,22 @@
     margin: 5px;
     cursor: pointer;
     box-sizing: border-box;
+    transition: 0.3s;
+}
+
+.nearly:hover,
+.randomize:hover {
+    background-color: rgb(255, 200, 148);
 }
 
 .sort {
-    background-color: rgb(255, 201, 102);
+    background-color: rgb(255, 168, 86);
+    transition: 0.4s;
+    color: white;
+    font-size: 25px;
+}
+.sort:hover {
+    background-color: rgb(255, 133, 102);
 }
 
 .sizedrag {
@@ -147,6 +159,11 @@
     box-sizing: border-box;
     height: 55px;
     cursor: pointer;
+    transition: 0.3s;
+}
+.picker:hover {
+    background-color: rgb(255, 173, 96);
+    color: white;
 }
 .dropdown {
     background-color: rgb(173, 173, 173);
@@ -158,6 +175,10 @@
     border: 1px solid lightgrey;
     border-top: none;
     font-size: 18px;
+    transition: 0.3s;
+}
+.dropdown div:hover {
+    background-color: rgb(255, 200, 148);
 }
 
 .up,
@@ -194,6 +215,12 @@
     box-sizing: border-box;
     padding: 0px 15px;
     cursor: pointer;
+    transition: 0.3s;
+}
+
+.cat_sele .cat_out:hover {
+    background-color: rgb(255, 173, 96);
+    color: white;
 }
 
 .cat_shower {
@@ -219,4 +246,9 @@
     box-sizing: border-box;
     padding: 0px 15px;
     cursor: pointer;
+    transition: 0.3s;
+}
+
+.cat_dropdown div:hover {
+    background-color: rgb(255, 200, 148);
 }

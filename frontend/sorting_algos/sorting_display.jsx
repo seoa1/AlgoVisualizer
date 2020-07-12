@@ -311,10 +311,11 @@ export default class SortingDisplay extends React.Component {
             for(let i = gap; i < this.state.arr.length; i++) {
                 let temp = this.state.arr[i];
                 let j = i;
+                this.setState({comparer: i});
                 while(j >= gap && this.state.arr[j - gap] > temp) {
                     
-                    this.setState({comparer: j, compare_to: j - gap});
-                    await this.sleep(this.state.wait * 3);
+                    this.setState({compare_to: j - gap});
+                    await this.sleep(this.state.wait * 7);
                     if(this.state.stop) {
                         this.clear_compares();
                         return;
