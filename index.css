@@ -278,12 +278,17 @@
 .square {
     background-color: beige;
     border: 1px solid grey;
-    width: 3vw;
-    height: 3vw;
+    height: 2vw;
 }
 
 .grid {
     display: grid;
     height: 100%;
     width: 100%;
+    grid-template-columns: repeat(50, 2vw);
+    grid-template-rows: repeat(50, 2vw);
+}
+
+.wall {
+    background-color: black;
 }
