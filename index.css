@@ -167,15 +167,18 @@
     cursor: pointer;
     transition: 0.3s;
 }
+
 .picker:hover {
     background-color: rgb(255, 173, 96);
     color: white;
 }
+
 .dropdown {
     background-color: rgb(173, 173, 173);
     margin: 0px 5px;
     box-sizing: border-box;
 }
+
 .dropdown div {
     padding: 8px 15px;
     border: 1px solid lightgrey;
@@ -278,7 +281,6 @@
 .square {
     background-color: beige;
     border: 1px solid grey;
-    height: 2vw;
 }
 
 .grid {
@@ -287,8 +289,34 @@
     width: 100%;
     grid-template-columns: repeat(50, 2vw);
     grid-template-rows: repeat(50, 2vw);
+
 }
 
 .wall {
     background-color: black;
+}
+
+.start {
+    background-color: green;
+}
+
+.target {
+    background-color: red;
+}
+
+div .searched {
+    background-color: lightblue;
+}
+
+.graph_sidebar {
+    position: fixed;
+    right: 0px;
+    background-color: black;
+    width: 280px;
+    height: 100%;
+    top: 0px;
+}
+
+.search {
+    background-color: white;
 }

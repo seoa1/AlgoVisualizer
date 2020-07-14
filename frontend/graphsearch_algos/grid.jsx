@@ -1,13 +1,15 @@
 import React from 'react';
 import Square from './square';
 
+
 export default class Grid extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             make_wall: false,
             remove_wall: false,
-            click_wall: false
+            click_wall: false,
+            
         }
 
         this.handle_mouse_up = this.handle_mouse_up.bind(this);
@@ -45,6 +47,7 @@ export default class Grid extends React.Component {
         let render_arr = [];
         for(let i=0; i<1300; i++) {
             render_arr.push(<Square key={i} 
+                tile={this.props.board.grid[i / 50 | 0][i % 50]}
                 make_wall={this.state.make_wall}
                 change={this.change_click_state}
                 remove_wall={this.state.remove_wall}/>);

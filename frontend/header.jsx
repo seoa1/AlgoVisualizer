@@ -15,6 +15,9 @@ export default class Header extends React.Component {
             case "traversal":
                 current_cat = "BST Traversal Algorithms";
                 break;
+            case "graphsearch":
+                current_cat = "Graph Search Algorithms";
+                break;
             default:
                 break;
         }
