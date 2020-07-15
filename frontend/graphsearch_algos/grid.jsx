@@ -47,6 +47,8 @@ export default class Grid extends React.Component {
         let render_arr = [];
         for(let i=0; i<1300; i++) {
             render_arr.push(<Square key={i} 
+                searching={this.props.searching}
+                reset={this.props.reset}
                 tile={this.props.board.grid[i / 50 | 0][i % 50]}
                 make_wall={this.state.make_wall}
                 change={this.change_click_state}

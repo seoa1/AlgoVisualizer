@@ -11,15 +11,21 @@ export default class Square extends React.Component {
         this.handle_click = this.handle_click.bind(this);
         this.sleep = this.sleep.bind(this);
     }
+
+    componentWillUpdate() {
+        if(this.state.wall && this.props.reset) {
+            this.setState({wall: false});
+        }
+    }
     sleep(msec) {
         return new Promise(resolve => setTimeout(resolve, msec));
     }
     handle_mouse_over() {
-        if(this.props.make_wall) {
+        if(this.props.make_wall && !this.props.searching) {
             this.setState({ wall: true });
             this.props.tile.wall = true;
         }
-        if(this.props.remove_wall) {
+        if(this.props.remove_wall && !this.props.searching) {
             this.setState({ wall: false });
             this.props.tile.wall = false;
         }
@@ -27,11 +33,11 @@ export default class Square extends React.Component {
 
     async handle_click() {
         await this.props.change(this.state.wall);
-        if(this.state.wall) {
+        if(this.state.wall && !this.props.searching) {
             this.setState({ wall: false });
             this.props.tile.wall = false;
         }
-        else {
+        else if(!this.props.searching){
             this.setState({ wall: true });
             this.props.tile.wall = true;
         }

@@ -311,7 +311,7 @@ div .searched {
 .graph_sidebar {
     position: fixed;
     right: 0px;
-    background-color: black;
+    background-color: white;
     width: 280px;
     height: 100%;
     top: 0px;
