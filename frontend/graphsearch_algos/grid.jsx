@@ -54,8 +54,13 @@ export default class Grid extends React.Component {
                 change={this.change_click_state}
                 remove_wall={this.state.remove_wall}/>);
         }
+        let column_width = (this.props.width - 280) / 50;
+        let col_string = "";
+        for(let i=0; i<50; i++) {
+            col_string += column_width.toString() + "px ";
+        }
         return (
-            <div className="grid" onMouseDown={this.handle_mouse_down} onMouseUp={this.handle_mouse_up}>
+            <div className="grid" style={{gridTemplateColumns: col_string, gridTemplateRows: col_string}} onMouseDown={this.handle_mouse_down} onMouseUp={this.handle_mouse_up}>
                 {render_arr}
             </div>
         )

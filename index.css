@@ -287,8 +287,6 @@
     display: grid;
     height: 100%;
     width: 100%;
-    grid-template-columns: repeat(50, 2vw);
-    grid-template-rows: repeat(50, 2vw);
 
 }
 
@@ -319,4 +317,8 @@ div .searched {
 
 .search {
     background-color: white;
+}
+
+.path {
+    background-color: yellow;
 }

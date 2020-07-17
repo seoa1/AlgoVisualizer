@@ -1,12 +1,12 @@
 import React from 'react';
 
-const Search = ({search}) => {
+const Search = ({search, searching}) => {
     const handle_click = () => {
         search();
     }
     return (
         <div className="search" onClick={handle_click}>
-            SEARCH
+            {searching ? "STOP" : "SEARCH"}
         </div>
     )
 }

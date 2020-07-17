@@ -6,7 +6,13 @@ export default class Tile {
         this._id = id;
         this._start = false;
         this._pos = pos;
+        this._parent = null;
+        this._ispath = false;
+        this._pathlen = 1000;
     }
+    get pathlen() { return this._pathlen; }
+    get ispath() { return this._ispath; }
+    get parent() { return this._parent; }
     get wall() { return this._wall; }
     get target() { return this._target; }
     get searched() { return this._searched; }
@@ -18,4 +24,7 @@ export default class Tile {
     set searched(searched) { this._searched = searched; }
     set start(start) { this._start = start };
     set pos(pos) { this._pos = pos; }
+    set parent(parent) { this._parent = parent; }
+    set ispath(ispath) { this._ispath = ispath; }
+    set pathlen(pathlen) { this._pathlen = pathlen; }
 }

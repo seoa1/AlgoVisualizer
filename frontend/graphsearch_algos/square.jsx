@@ -12,7 +12,7 @@ export default class Square extends React.Component {
         this.sleep = this.sleep.bind(this);
     }
 
-    componentWillUpdate() {
+    UNSAFE_componentWillUpdate() {
         if(this.state.wall && this.props.reset) {
             this.setState({wall: false});
         }
@@ -53,6 +53,9 @@ export default class Square extends React.Component {
         }
         else if(this.props.tile.target) {
             add_class += " target";
+        }
+        else if(this.props.tile.ispath) {
+            add_class += " path";
         }
         else if(this.props.tile.searched) {
             add_class += " searched";
