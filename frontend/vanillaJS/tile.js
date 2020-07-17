@@ -8,7 +8,7 @@ export default class Tile {
         this._pos = pos;
         this._parent = null;
         this._ispath = false;
-        this._pathlen = 1000;
+        this._pathlen = 100000000;
     }
     get pathlen() { return this._pathlen; }
     get ispath() { return this._ispath; }

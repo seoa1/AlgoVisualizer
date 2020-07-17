@@ -109,7 +109,6 @@ export default class GraphDisplay extends React.Component {
         let queue = [start_sq];
         let seen = new Set([start_sq.id]);
         let found = false;
-        console.log("searching");
         while(!found) {
             if(this.state.stop) {
                 return;
@@ -238,8 +237,8 @@ export default class GraphDisplay extends React.Component {
             min_heap[min_heap.length - 1] = temp;
 
             let min_sq = min_heap.pop();
-            await this.heapify(min_heap, 0, heap_search);
             heap_search.delete(min_sq);
+            await this.heapify(min_heap, 0, heap_search);
 
             if(min_sq.target) {
                 found = true;
@@ -252,15 +251,16 @@ export default class GraphDisplay extends React.Component {
                 if(!surr_sq.searched && !surr_sq.wall){
                     let sq_idx = heap_search.get(surr_sq);
                     if(sq_idx < min_heap.length) {
-                        console.log(surr_sq.pos);
                         console.log(min_heap[sq_idx].pos);
-                        surr_sq.parent = min_sq;
+                        console.log(surr_sq.pos);
                         let bubbled = true;
                         let pot_pathlen = min_sq.pathlen + 1;
                         if(pot_pathlen < surr_sq.pathlen) {
                             surr_sq.pathlen = pot_pathlen;
                             bubbled = false;
+                            surr_sq.parent = min_sq;
                         }
+                        console.log(surr_sq.pathlen);
                         
                         // bubble up the heap
                         while(!bubbled) {
@@ -272,6 +272,7 @@ export default class GraphDisplay extends React.Component {
                                 min_heap[parent_idx] = min_heap[sq_idx];
                                 min_heap[sq_idx] = temp;
                                 heap_search.set(surr_sq, parent_idx);
+                                heap_search.set(min_heap[sq_idx], sq_idx);
                                 bubbled = false;
                             }
                             console.log(parent_idx);
@@ -293,9 +294,6 @@ export default class GraphDisplay extends React.Component {
             }
             temp = temp.parent;
         }
-
-
-
     }
 
 
