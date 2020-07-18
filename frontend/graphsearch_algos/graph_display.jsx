@@ -29,6 +29,8 @@ export default class GraphDisplay extends React.Component {
         this.heapify = this.heapify.bind(this);
         this.djikstra = this.djikstra.bind(this);
         this.update_window_dims = this.update_window_dims.bind(this);
+        this.a_star = this.a_star.bind(this);
+        this.astar_heapify = this.astar_heapify.bind(this);
     }
     componentDidMount() {
         this.update_window_dims();
@@ -96,6 +98,9 @@ export default class GraphDisplay extends React.Component {
                 break;
             case "djikstra":
                 await this.djikstra();
+                break;
+            case "astar":
+                await this.a_star();
                 break;
             default:
                 break;
@@ -195,7 +200,6 @@ export default class GraphDisplay extends React.Component {
     }
 
 
-    // min-heap djikstra not working
     heapify(arr, root, heap_search) {
         let smallest = root;
         let left = 2 * root + 1;
@@ -216,6 +220,112 @@ export default class GraphDisplay extends React.Component {
         }
     }
 
+    astar_heapify(arr, root, heap_search) {
+        let smallest = root;
+        let left = 2 * root + 1;
+        let right = 2 * root + 2;
+        if(left < arr.length && arr[left].f <= arr[smallest].f) {
+            smallest = left;
+        }
+        if(right < arr.length && arr[right].f <= arr[smallest].f) {
+            smallest = right;
+        }
+        if(smallest !== root) {
+            heap_search.set(arr[smallest], root);
+            heap_search.set(arr[root], smallest);
+            let temp = arr[smallest];
+            arr[smallest] = arr[root];
+            arr[root] = temp;
+            this.astar_heapify(arr, smallest, heap_search);
+        }
+    }
+
+    async a_star() {
+        let start_sq = this.state.board.grid[this.state.start[0]][this.state.start[1]];
+        start_sq.pathlen = 0;
+        start_sq.f = 0;
+        let min_heap = [start_sq];
+        let heap_search = new Map();
+        heap_search.set(start_sq, 0);
+        let idx = 1;
+        this.state.board.grid.flat().forEach( sq => {
+            if(sq.pathlen !== 0) {
+                min_heap.push(sq);
+                heap_search.set(sq, idx);
+                idx++;
+            }
+        });
+        let found = false;
+        while(!found) {
+            if(this.state.stop) {
+                return;
+            }
+            let temp = min_heap[0];
+            min_heap[0] = min_heap[min_heap.length - 1];
+            min_heap[min_heap.length - 1] = temp;
+
+            let min_sq = min_heap.pop();
+            heap_search.delete(min_sq);
+            await this.astar_heapify(min_heap, 0, heap_search);
+
+            if(min_sq.target) {
+                found = true;
+                break;
+            }
+            min_sq.searched = true;
+
+            this.surr_squares(min_sq.pos).forEach( surr_sq => {
+                if(!surr_sq.searched && !surr_sq.wall){
+                    let sq_idx = heap_search.get(surr_sq);
+                    if(sq_idx < min_heap.length) {
+                        let bubbled = true;
+                        let pot_pathlen = min_sq.pathlen + 1;
+                        if(pot_pathlen < surr_sq.pathlen) {
+                            surr_sq.parent = min_sq;
+                            surr_sq.pathlen = pot_pathlen;
+                        }
+                        let manhattan = Math.abs(surr_sq.pos[0] - this.state.target[0]) + Math.abs(surr_sq.pos[1] - this.state.target[1]);
+                        let pot_f = manhattan + (surr_sq.pathlen * 0.99);
+                        if(pot_f < surr_sq.f ) {
+                            surr_sq.f = pot_f;
+                        }
+                        
+                        bubbled = false;
+                        
+                        
+                        // bubble up the heap
+                        while(!bubbled) {
+                            sq_idx = heap_search.get(surr_sq);
+                            bubbled = true;
+                            let parent_idx = ((sq_idx - 1) / 2) | 0;
+                            if(parent_idx >= 0 && parent_idx !== sq_idx && min_heap[sq_idx].f <= min_heap[parent_idx].f) {
+                                let temp = min_heap[parent_idx];
+                                min_heap[parent_idx] = min_heap[sq_idx];
+                                min_heap[sq_idx] = temp;
+                                heap_search.set(surr_sq, parent_idx);
+                                heap_search.set(min_heap[sq_idx], sq_idx);
+                                bubbled = false;
+                            }
+                        }
+                    }
+                }
+            });
+            this.setState({ board: this.state.board });
+            await this.sleep(0);
+        }
+        let target_sq = this.state.board.grid[this.state.target[0]][this.state.target[1]];
+        let temp = target_sq.parent;
+        while(temp != null) {
+            temp.ispath = true;
+            this.setState({ board: this.state.board });
+            await this.sleep(0);
+            if(this.state.stop) {
+                return;
+            }
+            temp = temp.parent;
+        }
+    }
+
     async djikstra() {
         let start_sq = this.state.board.grid[this.state.start[0]][this.state.start[1]];
         start_sq.pathlen = 0;
@@ -232,6 +342,9 @@ export default class GraphDisplay extends React.Component {
         });
         let found = false;
         while(!found) {
+            if(this.state.stop) {
+                return;
+            }
             let temp = min_heap[0];
             min_heap[0] = min_heap[min_heap.length - 1];
             min_heap[min_heap.length - 1] = temp;
@@ -251,8 +364,7 @@ export default class GraphDisplay extends React.Component {
                 if(!surr_sq.searched && !surr_sq.wall){
                     let sq_idx = heap_search.get(surr_sq);
                     if(sq_idx < min_heap.length) {
-                        console.log(min_heap[sq_idx].pos);
-                        console.log(surr_sq.pos);
+
                         let bubbled = true;
                         let pot_pathlen = min_sq.pathlen + 1;
                         if(pot_pathlen < surr_sq.pathlen) {
@@ -260,7 +372,6 @@ export default class GraphDisplay extends React.Component {
                             bubbled = false;
                             surr_sq.parent = min_sq;
                         }
-                        console.log(surr_sq.pathlen);
                         
                         // bubble up the heap
                         while(!bubbled) {
@@ -275,7 +386,6 @@ export default class GraphDisplay extends React.Component {
                                 heap_search.set(min_heap[sq_idx], sq_idx);
                                 bubbled = false;
                             }
-                            console.log(parent_idx);
                         }
                     }
                 }

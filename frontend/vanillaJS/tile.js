@@ -9,7 +9,9 @@ export default class Tile {
         this._parent = null;
         this._ispath = false;
         this._pathlen = 100000000;
+        this._f = 10000000000000000;
     }
+    get f() { return this._f }
     get pathlen() { return this._pathlen; }
     get ispath() { return this._ispath; }
     get parent() { return this._parent; }
@@ -27,4 +29,5 @@ export default class Tile {
     set parent(parent) { this._parent = parent; }
     set ispath(ispath) { this._ispath = ispath; }
     set pathlen(pathlen) { this._pathlen = pathlen; }
+    set f(f) { this._f = f; }
 }
