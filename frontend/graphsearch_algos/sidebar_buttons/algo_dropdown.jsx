@@ -15,7 +15,7 @@ const Dropdown = ({ set_algo }) => {
     }
 
     return (
-        <div>
+        <div className="dropdown">
             <div onClick={handle_click_b}>BFS</div>
             <div onClick={handle_click_d}>DFS</div>
             <div onClick={handle_click_dj}>Djikstra's</div>

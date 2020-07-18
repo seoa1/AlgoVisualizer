@@ -54,7 +54,7 @@ export default class Grid extends React.Component {
                 change={this.change_click_state}
                 remove_wall={this.state.remove_wall}/>);
         }
-        let column_width = (this.props.width - 280) / 50;
+        let column_width = (this.props.width - 250) / 50;
         let col_string = "";
         for(let i=0; i<50; i++) {
             col_string += column_width.toString() + "px ";

@@ -42,7 +42,9 @@
 
 .randomize,
 .nearly,
-.sort {
+.sort,
+.search,
+.resetall {
     background-color: white;
     padding: 15px;
     margin: 5px;
@@ -52,17 +54,21 @@
 }
 
 .nearly:hover,
-.randomize:hover {
+.randomize:hover,
+.resetall:hover {
     background-color: rgb(255, 200, 148);
 }
 
-.sort {
+.sort,
+.search {
     background-color: rgb(255, 168, 86);
     transition: 0.4s;
     color: white;
     font-size: 25px;
 }
-.sort:hover {
+
+.sort:hover,
+.search:hover {
     background-color: rgb(255, 133, 102);
 }
 
@@ -309,14 +315,44 @@ div .searched {
 .graph_sidebar {
     position: fixed;
     right: 0px;
-    background-color: white;
-    width: 280px;
+    background-color: rgb(100, 100, 100);
+    width: 250px;
     height: 100%;
-    top: 0px;
+    top: 100px;
+    font-size: 20px;
 }
 
-.search {
-    background-color: white;
+.graph_sidebar div {
+    width: 220px;
+    box-sizing: border-box;
+    margin: 0 auto;
+}
+
+.graph_sidebar .picker .dropdown div{
+    margin: 0 auto;
+}
+
+.graph_sidebar .picker .dropdown {
+    margin: 0 auto;
+    position: relative;
+    bottom: 10px;
+    right: 15px;
+    color: black;
+}
+.graph_sidebar .search {
+    margin-top: 15px;
+}
+
+.graph_sidebar .picker {
+    margin: 0 auto;
+    margin-bottom: 0px;
+}
+
+.graph_sidebar .resetall {
+    margin-top: 5px;
+}
+.graph_sidebar .pickme {
+    margin-top: 10px;
 }
 
 .path {

@@ -45,16 +45,16 @@ export default class Square extends React.Component {
 
     render() {
         let add_class = "";
-        if(this.state.wall) {
-            add_class += " wall";
-        }
+        
         if(this.props.tile.start) {
             add_class += " start";
         }
         else if(this.props.tile.target) {
             add_class += " target";
         }
-        else if(this.props.tile.ispath) {
+        else if(this.state.wall) {
+            add_class += " wall";
+        } else if(this.props.tile.ispath) {
             add_class += " path";
         }
         else if(this.props.tile.searched) {

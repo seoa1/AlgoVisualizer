@@ -5,7 +5,7 @@ const ResetAll = ({reset_all}) => {
         reset_all();
     }
     return (
-        <div onClick={handle_click}>
+        <div className="resetall" onClick={handle_click}>
             Reset All
         </div>
     )

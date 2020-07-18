@@ -66,6 +66,9 @@ export default class GraphDisplay extends React.Component {
             for(let j=0; j<50; j++) {
                 this.state.board.grid[i][j].searched = false;
                 this.state.board.grid[i][j].ispath = false;
+                this.state.board.grid[i][j].parent = null;
+                this.state.board.grid[i][j].pathlen = 100000000000;
+                this.state.board.grid[i][j].f = 10000000000000;
             }
         }
         this.setState({ board: this.state.board });
@@ -94,7 +97,7 @@ export default class GraphDisplay extends React.Component {
                 await this.bfs();
                 break;
             case "dfs":
-                await this.dfs(this.state.board.grid[10][10]);
+                await this.dfs();
                 break;
             case "djikstra":
                 await this.djikstra();
@@ -141,6 +144,7 @@ export default class GraphDisplay extends React.Component {
             await this.sleep(0);
             
         }
+        //this.setState({ board: this.state.board });
         //path visualize
         let target_sq = this.state.board.grid[this.state.target[0]][this.state.target[1]];
         let temp = target_sq.parent;
@@ -351,7 +355,7 @@ export default class GraphDisplay extends React.Component {
 
             let min_sq = min_heap.pop();
             heap_search.delete(min_sq);
-            await this.heapify(min_heap, 0, heap_search);
+            this.heapify(min_heap, 0, heap_search);
 
             if(min_sq.target) {
                 found = true;
@@ -426,7 +430,7 @@ export default class GraphDisplay extends React.Component {
                 <Grid width={this.state.width} height={this.state.height} 
                 searching={this.state.searching} board={this.state.board} 
                 algo={this.state.algo} reset={this.state.reset}/>
-                <GraphSidebar reset_all={this.reset_all} searching={this.state.searching} 
+                <GraphSidebar algo={this.state.algo} reset_all={this.reset_all} searching={this.state.searching} 
                 set_algo={this.set_algo} search={this.search} />
             </div>
         )
