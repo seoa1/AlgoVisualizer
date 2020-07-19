@@ -72,6 +72,11 @@
     background-color: rgb(255, 133, 102);
 }
 
+.searching,
+.sorting {
+    background-color: rgb(255, 133, 102);
+}
+
 .sizedrag {
     background-color: lightgrey;
     padding: 15px;
@@ -239,7 +244,7 @@
 }
 
 .cat_shower {
-    width: 280px;
+    width: 0px;
     height: 50px;
     padding: 0px 15px;
     box-sizing: border-box;
@@ -350,6 +355,7 @@ div .searched {
 
 .graph_sidebar .resetall {
     margin-top: 5px;
+    margin-bottom: 10px;
 }
 .graph_sidebar .pickme {
     margin-top: 10px;
@@ -357,4 +363,51 @@ div .searched {
 
 .path {
     background-color: yellow;
+}
+
+.speed {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+}
+.speed div {
+    margin: 5px auto;
+}
+
+.speed .speedbutton {
+    cursor: pointer;
+    transition: 0.3s;
+    padding: 10px;
+    width: 190px;
+}
+
+.speed .speed1 {
+    background-color: rgb(190, 255, 199);
+}
+.speed .speed1:hover {
+    background-color: rgb(82, 218, 100);
+}
+.speed .speedselect1 {
+    background-color: rgb(82, 218, 100);
+}
+
+.speed .speed2 {
+    background-color: rgb(250, 207, 126);
+}
+.speed .speed2:hover {
+    background-color: rgb(253, 176, 33);
+}
+.speed .speedselect2 {
+    background-color: rgb(253, 176, 33);
+}
+
+.speed .speed3 {
+    background-color: rgb(255, 162, 162);
+}
+.speed .speed3:hover {
+    background-color: rgb(255, 87, 87);
+}
+.speed .speedselect3 {
+    background-color: rgb(255, 87, 87);
 }

@@ -6,7 +6,7 @@ const SortButton = ({sort, sorting}) => {
     }
 
     return (
-        <div className="sort" onClick={handle_click}>
+        <div className={sorting? "sorting sort" : "sort"} onClick={handle_click}>
             {sorting ? "STOP" : "SORT"}
         </div>
     )

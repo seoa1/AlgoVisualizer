@@ -5,7 +5,7 @@ const Search = ({search, searching}) => {
         search();
     }
     return (
-        <div className="search" onClick={handle_click}>
+        <div className={searching? "search searching" :"search"} onClick={handle_click}>
             {searching ? "STOP" : "SEARCH"}
         </div>
     )
