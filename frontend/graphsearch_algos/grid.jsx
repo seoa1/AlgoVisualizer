@@ -9,7 +9,8 @@ export default class Grid extends React.Component {
             make_wall: false,
             remove_wall: false,
             click_wall: false,
-            
+            click_start: false,
+            click_target: false
         }
 
         this.handle_mouse_up = this.handle_mouse_up.bind(this);

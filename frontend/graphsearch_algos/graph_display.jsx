@@ -2,6 +2,7 @@ import React from 'react';
 import GraphSidebar from './graph_sidebar';
 import Grid from './grid';
 import Board from '../vanillaJS/board';
+import Tutorial from './tutorial';
 
 export default class GraphDisplay extends React.Component {
     constructor(props){
@@ -18,7 +19,8 @@ export default class GraphDisplay extends React.Component {
             reset: false,
             width: 0,
             height: 0,
-            tick_time: 1
+            tick_time: 1,
+            show_tut: true
         }
         this.set_algo = this.set_algo.bind(this);
         this.search = this.search.bind(this);
@@ -35,6 +37,7 @@ export default class GraphDisplay extends React.Component {
         this.a_star = this.a_star.bind(this);
         this.astar_heapify = this.astar_heapify.bind(this);
         this.change_tick_time = this.change_tick_time.bind(this);
+        this.close_tut = this.close_tut.bind(this);
     }
     componentDidMount() {
         this.update_window_dims();
@@ -485,9 +488,14 @@ export default class GraphDisplay extends React.Component {
         return squares;
     } 
 
+    close_tut() {
+        this.setState({ show_tut: false });
+    }
+
     render() {
         return (
             <div>
+                {this.state.show_tut ? <Tutorial close={this.close_tut}/> : null}
                 <Grid width={this.state.width} height={this.state.height} 
                 searching={this.state.searching} board={this.state.board} 
                 algo={this.state.algo} reset={this.state.reset}/>
