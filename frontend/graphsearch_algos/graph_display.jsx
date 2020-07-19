@@ -155,19 +155,25 @@ export default class GraphDisplay extends React.Component {
                 break;
             }
             else {
-                this.surr_squares(curr_sq.pos).forEach( sq => {
-                    if(!sq.searched && !sq.wall && !seen.has(sq.id)) {
+                let surr = this.surr_squares(curr_sq.pos);
+                surr.forEach( sq => {
+                    if(!seen.has(sq.id)) {
                         queue.push(sq);
                         sq.parent = curr_sq;
                         seen.add(sq.id);
                     }
                 });
             }
+            
             curr_sq.searched = true;
             i++;
             if(i % this.state.tick_time == 0) {
                 this.setState({ board: this.state.board });
                 await this.sleep(0);
+            }
+            if(queue.length === 0) {
+                this.setState({ searching: false });
+                return;
             }
             
             
@@ -198,19 +204,15 @@ export default class GraphDisplay extends React.Component {
                 return;
             }
             let curr_sq = stack.pop();
-            if(curr_sq.searched) {
-                continue;
-            }
             if(curr_sq.target) {
                 found = true;
                 break;
             }
             else {
                 this.surr_squares(curr_sq.pos).forEach( sq => {
-                    if(!sq.searched && !sq.wall) {
-                        stack.push(sq);
-                        sq.parent = curr_sq;
-                    }
+                    stack.push(sq);
+                    sq.parent = curr_sq;
+                    
                 })
             }
             curr_sq.searched = true;
@@ -218,6 +220,11 @@ export default class GraphDisplay extends React.Component {
             if(i % this.state.tick_time == 0) {
                 this.setState({ board: this.state.board });
                 await this.sleep(0);
+            }
+            console.log(stack.length);
+            if(stack.length === 0) {
+                this.setState({ searching: false });
+                return;
             }
         }
 
@@ -309,43 +316,46 @@ export default class GraphDisplay extends React.Component {
                 found = true;
                 break;
             }
+            if(min_sq.pathlen > 10000000) {
+                this.setState({ searching: false });
+                return;
+            }
             min_sq.searched = true;
 
             this.surr_squares(min_sq.pos).forEach( surr_sq => {
-                if(!surr_sq.searched && !surr_sq.wall){
-                    let sq_idx = heap_search.get(surr_sq);
-                    if(sq_idx < min_heap.length) {
-                        let bubbled = true;
-                        let pot_pathlen = min_sq.pathlen + 1;
-                        if(pot_pathlen < surr_sq.pathlen) {
-                            surr_sq.parent = min_sq;
-                            surr_sq.pathlen = pot_pathlen;
-                        }
-                        let manhattan = Math.abs(surr_sq.pos[0] - this.state.target[0]) + Math.abs(surr_sq.pos[1] - this.state.target[1]);
-                        let pot_f = manhattan + (surr_sq.pathlen * 0.99);
-                        if(pot_f < surr_sq.f ) {
-                            surr_sq.f = pot_f;
-                        }
-                        
-                        bubbled = false;
-                        
-                        
-                        // bubble up the heap
-                        while(!bubbled) {
-                            sq_idx = heap_search.get(surr_sq);
-                            bubbled = true;
-                            let parent_idx = ((sq_idx - 1) / 2) | 0;
-                            if(parent_idx >= 0 && parent_idx !== sq_idx && min_heap[sq_idx].f <= min_heap[parent_idx].f) {
-                                let temp = min_heap[parent_idx];
-                                min_heap[parent_idx] = min_heap[sq_idx];
-                                min_heap[sq_idx] = temp;
-                                heap_search.set(surr_sq, parent_idx);
-                                heap_search.set(min_heap[sq_idx], sq_idx);
-                                bubbled = false;
-                            }
+                let sq_idx = heap_search.get(surr_sq);
+                if(sq_idx < min_heap.length) {
+                    let bubbled = true;
+                    let pot_pathlen = min_sq.pathlen + 1;
+                    if(pot_pathlen < surr_sq.pathlen) {
+                        surr_sq.parent = min_sq;
+                        surr_sq.pathlen = pot_pathlen;
+                    }
+                    let manhattan = Math.abs(surr_sq.pos[0] - this.state.target[0]) + Math.abs(surr_sq.pos[1] - this.state.target[1]);
+                    let pot_f = manhattan + (surr_sq.pathlen * 0.99);
+                    if(pot_f < surr_sq.f ) {
+                        surr_sq.f = pot_f;
+                    }
+                    
+                    bubbled = false;
+                    
+                    
+                    // bubble up the heap
+                    while(!bubbled) {
+                        sq_idx = heap_search.get(surr_sq);
+                        bubbled = true;
+                        let parent_idx = ((sq_idx - 1) / 2) | 0;
+                        if(parent_idx >= 0 && parent_idx !== sq_idx && min_heap[sq_idx].f <= min_heap[parent_idx].f) {
+                            let temp = min_heap[parent_idx];
+                            min_heap[parent_idx] = min_heap[sq_idx];
+                            min_heap[sq_idx] = temp;
+                            heap_search.set(surr_sq, parent_idx);
+                            heap_search.set(min_heap[sq_idx], sq_idx);
+                            bubbled = false;
                         }
                     }
                 }
+                
             });
             i++;
             if(i % this.state.tick_time == 0) {
@@ -398,38 +408,41 @@ export default class GraphDisplay extends React.Component {
                 found = true;
                 break;
             }
+            if(min_sq.pathlen > 10000000) {
+                this.setState({ searching: false });
+                return;
+            }
 
             min_sq.searched = true;
 
             this.surr_squares(min_sq.pos).forEach( surr_sq => {
-                if(!surr_sq.searched && !surr_sq.wall){
-                    let sq_idx = heap_search.get(surr_sq);
-                    if(sq_idx < min_heap.length) {
+                let sq_idx = heap_search.get(surr_sq);
+                if(sq_idx < min_heap.length) {
 
-                        let bubbled = true;
-                        let pot_pathlen = min_sq.pathlen + 1;
-                        if(pot_pathlen < surr_sq.pathlen) {
-                            surr_sq.pathlen = pot_pathlen;
+                    let bubbled = true;
+                    let pot_pathlen = min_sq.pathlen + 1;
+                    if(pot_pathlen < surr_sq.pathlen) {
+                        surr_sq.pathlen = pot_pathlen;
+                        bubbled = false;
+                        surr_sq.parent = min_sq;
+                    }
+                    
+                    // bubble up the heap
+                    while(!bubbled) {
+                        sq_idx = heap_search.get(surr_sq);
+                        bubbled = true;
+                        let parent_idx = ((sq_idx - 1) / 2) | 0;
+                        if(parent_idx >= 0 && min_heap[sq_idx].pathlen < min_heap[parent_idx].pathlen) {
+                            let temp = min_heap[parent_idx];
+                            min_heap[parent_idx] = min_heap[sq_idx];
+                            min_heap[sq_idx] = temp;
+                            heap_search.set(surr_sq, parent_idx);
+                            heap_search.set(min_heap[sq_idx], sq_idx);
                             bubbled = false;
-                            surr_sq.parent = min_sq;
-                        }
-                        
-                        // bubble up the heap
-                        while(!bubbled) {
-                            sq_idx = heap_search.get(surr_sq);
-                            bubbled = true;
-                            let parent_idx = ((sq_idx - 1) / 2) | 0;
-                            if(parent_idx >= 0 && min_heap[sq_idx].pathlen < min_heap[parent_idx].pathlen) {
-                                let temp = min_heap[parent_idx];
-                                min_heap[parent_idx] = min_heap[sq_idx];
-                                min_heap[sq_idx] = temp;
-                                heap_search.set(surr_sq, parent_idx);
-                                heap_search.set(min_heap[sq_idx], sq_idx);
-                                bubbled = false;
-                            }
                         }
                     }
                 }
+                
             });
             i++;
             if(i % this.state.tick_time == 0) {
@@ -460,7 +473,11 @@ export default class GraphDisplay extends React.Component {
         DIRS.forEach( dir => {
             let new_pos = [dir[0] + pos[0], dir[1] + pos[1]];
             if(new_pos[0] >= 0 && new_pos[0] < num_rows && new_pos[1] >= 0 && new_pos[1] < 50) {
-                squares.push(this.state.board.grid[new_pos[0]][new_pos[1]]);
+                let pot_sq = this.state.board.grid[new_pos[0]][new_pos[1]];
+                if(!pot_sq.searched && !pot_sq.wall) {
+                    squares.push(pot_sq);
+
+                }
             }
         });
         return squares;
