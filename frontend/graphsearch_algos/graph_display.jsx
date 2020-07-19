@@ -50,7 +50,8 @@ export default class GraphDisplay extends React.Component {
         this.setState({ tick_time: time });
     }
 
-    update_window_dims() {
+    async update_window_dims() {
+        await this.setState({ stop: true, reset: true, searching: false });
         this.state.board.grid[this.state.start[0]][this.state.start[1]] = false;
         this.state.board.grid[this.state.target[0]][this.state.target[1]] = false;
         let column_width = (window.innerWidth - 250) / 50;
@@ -67,7 +68,8 @@ export default class GraphDisplay extends React.Component {
             height: window.innerHeight, 
             board: this.state.board, 
             start: [start_row, 15],
-            target: [start_row, 35]
+            target: [start_row, 35],
+            reset: false
         });
     
     }
