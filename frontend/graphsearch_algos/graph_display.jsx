@@ -6,16 +6,19 @@ import Board from '../vanillaJS/board';
 export default class GraphDisplay extends React.Component {
     constructor(props){
         super(props);
+        let column_width = (window.innerWidth - 250) / 50;
+        let num_rows = ((window.innerHeight - 100) / column_width) | 0;
         this.state = {
             algo: "bfs",
-            board: new Board(),
+            board: new Board(num_rows),
             start: [12, 15],
             target: [12, 35],
             searching: false,
             stop: false,
             reset: false,
             width: 0,
-            height: 0
+            height: 0,
+            tick_time: 1
         }
         this.set_algo = this.set_algo.bind(this);
         this.search = this.search.bind(this);
@@ -31,22 +34,42 @@ export default class GraphDisplay extends React.Component {
         this.update_window_dims = this.update_window_dims.bind(this);
         this.a_star = this.a_star.bind(this);
         this.astar_heapify = this.astar_heapify.bind(this);
+        this.change_tick_time = this.change_tick_time.bind(this);
     }
     componentDidMount() {
         this.update_window_dims();
         window.addEventListener('resize', this.update_window_dims);
 
-        this.state.board.grid[12][15].start = true;
-        this.state.board.grid[12][35].target = true;
-        this.setState({ board: this.state.board });
     }
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.update_window_dims);
     }
 
+    change_tick_time(time) {
+        this.setState({ tick_time: time });
+    }
+
     update_window_dims() {
-        this.setState({ width: window.innerWidth, height: window.innerHeight });
+        this.state.board.grid[this.state.start[0]][this.state.start[1]] = false;
+        this.state.board.grid[this.state.target[0]][this.state.target[1]] = false;
+        let column_width = (window.innerWidth - 250) / 50;
+        let num_rows = ((window.innerHeight - 100) / column_width) | 0;
+        let start_row = (num_rows / 2 | 0) - 1;
+        this.state.board = new Board(num_rows);
+        // this.state.width = window.innerWidth;
+        // this.state.height = window.innerHeight;
+        // this.state.start = [start_row, 15];
+        // this.state.target = [start_row, 35];
+        this.state.board.grid[start_row][15].start = true;
+        this.state.board.grid[start_row][35].target = true;
+        this.setState({ width: window.innerWidth, 
+            height: window.innerHeight, 
+            board: this.state.board, 
+            start: [start_row, 15],
+            target: [start_row, 35]
+        });
+    
     }
 
     update_board() {
@@ -55,22 +78,23 @@ export default class GraphDisplay extends React.Component {
 
     async reset_all() {
         await this.setState({ stop: true, reset: true });
-        this.state.board = new Board();
+        let column_width = (window.innerWidth - 250) / 50;
+        let num_rows = ((window.innerHeight - 100) / column_width) | 0;
+        this.state.board = new Board(num_rows);
         this.state.board.grid[this.state.start[0]][this.state.start[1]].start = true;
         this.state.board.grid[this.state.target[0]][this.state.target[1]].target = true;
         this.setState({ board: this.state.board, reset: false, searching: false });
     }
 
     reset_searched() {
-        for(let i=0; i<26; i++) {
-            for(let j=0; j<50; j++) {
-                this.state.board.grid[i][j].searched = false;
-                this.state.board.grid[i][j].ispath = false;
-                this.state.board.grid[i][j].parent = null;
-                this.state.board.grid[i][j].pathlen = 100000000000;
-                this.state.board.grid[i][j].f = 10000000000000;
-            }
-        }
+        this.state.board.grid.flat(1).forEach( sq => {
+            sq.searched = false;
+            sq.ispath = false;
+            sq.parent = null;
+            sq.pathlen = 100000000000000;
+            sq.f = 100000000000000;
+        })
+
         this.setState({ board: this.state.board });
     }
 
@@ -117,6 +141,7 @@ export default class GraphDisplay extends React.Component {
         let queue = [start_sq];
         let seen = new Set([start_sq.id]);
         let found = false;
+        let i = 0;
         while(!found) {
             if(this.state.stop) {
                 return;
@@ -139,9 +164,12 @@ export default class GraphDisplay extends React.Component {
                 });
             }
             curr_sq.searched = true;
+            i++;
+            if(i % this.state.tick_time == 0) {
+                this.setState({ board: this.state.board });
+                await this.sleep(0);
+            }
             
-            this.setState({ board: this.state.board });
-            await this.sleep(0);
             
         }
         //this.setState({ board: this.state.board });
@@ -164,6 +192,7 @@ export default class GraphDisplay extends React.Component {
         let start_sq = this.state.board.grid[start[0]][start[1]];
         let stack = [start_sq];
         let found = false;
+        let i=0;
         while(!found) {
             if(this.state.stop) {
                 return;
@@ -185,8 +214,11 @@ export default class GraphDisplay extends React.Component {
                 })
             }
             curr_sq.searched = true;
-            this.setState({ board: this.state.board });
-            await this.sleep(0);
+            i++;
+            if(i % this.state.tick_time == 0) {
+                this.setState({ board: this.state.board });
+                await this.sleep(0);
+            }
         }
 
         //path visualize
@@ -260,6 +292,7 @@ export default class GraphDisplay extends React.Component {
             }
         });
         let found = false;
+        let i=0;
         while(!found) {
             if(this.state.stop) {
                 return;
@@ -314,8 +347,11 @@ export default class GraphDisplay extends React.Component {
                     }
                 }
             });
-            this.setState({ board: this.state.board });
-            await this.sleep(0);
+            i++;
+            if(i % this.state.tick_time == 0) {
+                this.setState({ board: this.state.board });
+                await this.sleep(0);
+            }
         }
         let target_sq = this.state.board.grid[this.state.target[0]][this.state.target[1]];
         let temp = target_sq.parent;
@@ -345,6 +381,7 @@ export default class GraphDisplay extends React.Component {
             }
         });
         let found = false;
+        let i=0;
         while(!found) {
             if(this.state.stop) {
                 return;
@@ -394,8 +431,11 @@ export default class GraphDisplay extends React.Component {
                     }
                 }
             });
-            this.setState({ board: this.state.board });
-            await this.sleep(0);
+            i++;
+            if(i % this.state.tick_time == 0) {
+                this.setState({ board: this.state.board });
+                await this.sleep(0);
+            }
         }
         let target_sq = this.state.board.grid[this.state.target[0]][this.state.target[1]];
         let temp = target_sq.parent;
@@ -413,11 +453,13 @@ export default class GraphDisplay extends React.Component {
 
 
     surr_squares(pos) {
+        let column_width = (window.innerWidth - 250) / 50;
+        let num_rows = ((window.innerHeight - 100) / column_width) | 0;
         let DIRS = [[0,1],[1,0],[0,-1],[-1,0]];
         let squares = [];
         DIRS.forEach( dir => {
             let new_pos = [dir[0] + pos[0], dir[1] + pos[1]];
-            if(new_pos[0] >= 0 && new_pos[0] < 26 && new_pos[1] >= 0 && new_pos[1] < 50) {
+            if(new_pos[0] >= 0 && new_pos[0] < num_rows && new_pos[1] >= 0 && new_pos[1] < 50) {
                 squares.push(this.state.board.grid[new_pos[0]][new_pos[1]]);
             }
         });
@@ -430,7 +472,8 @@ export default class GraphDisplay extends React.Component {
                 <Grid width={this.state.width} height={this.state.height} 
                 searching={this.state.searching} board={this.state.board} 
                 algo={this.state.algo} reset={this.state.reset}/>
-                <GraphSidebar algo={this.state.algo} reset_all={this.reset_all} searching={this.state.searching} 
+                <GraphSidebar algo={this.state.algo} change_time={this.change_tick_time}
+                reset_all={this.reset_all} searching={this.state.searching} 
                 set_algo={this.set_algo} search={this.search} />
             </div>
         )

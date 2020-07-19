@@ -32,7 +32,7 @@ export default class Picker extends React.Component{
                 algo_out = "Djikstra's";
                 break;
             case "astar":
-                algo_out = "A Star";
+                algo_out = "A*";
                 break;
             default:
                 break;

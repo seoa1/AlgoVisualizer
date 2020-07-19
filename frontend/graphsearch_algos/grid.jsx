@@ -44,8 +44,14 @@ export default class Grid extends React.Component {
     }
 
     render() {
+        
         let render_arr = [];
-        for(let i=0; i<1300; i++) {
+        let column_width = (this.props.width - 250) / 50;
+        let num_rows = ((this.props.height - 100) / column_width) | 0;
+        console.log(50 * num_rows);
+        console.log(this.props.board.grid.flat(1).length);
+        console.log("----")
+        for(let i=0; i<(50 * num_rows); i++) {
             render_arr.push(<Square key={i} 
                 searching={this.props.searching}
                 reset={this.props.reset}
@@ -54,7 +60,7 @@ export default class Grid extends React.Component {
                 change={this.change_click_state}
                 remove_wall={this.state.remove_wall}/>);
         }
-        let column_width = (this.props.width - 250) / 50;
+        
         let col_string = "";
         for(let i=0; i<50; i++) {
             col_string += column_width.toString() + "px ";
