@@ -29,10 +29,18 @@ export default class Square extends React.Component {
             this.setState({ wall: false });
             this.props.tile.wall = false;
         }
+        if(this.props.move_start && !this.props.searching) {
+            this.props.change_start(this.props.tile.pos);
+            this.props.tile.start = true;
+        }
+        if(this.props.move_target && !this.props.searching) {
+            this.props.change_target(this.props.tile.pos);
+            this.props.tile.target = true;
+        }
     }
 
     async handle_click() {
-        await this.props.change(this.state.wall);
+        await this.props.change(this.state.wall, this.props.tile.start, this.props.tile.target);
         if(this.state.wall && !this.props.searching) {
             this.setState({ wall: false });
             this.props.tile.wall = false;

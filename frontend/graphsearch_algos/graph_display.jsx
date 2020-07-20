@@ -38,6 +38,8 @@ export default class GraphDisplay extends React.Component {
         this.astar_heapify = this.astar_heapify.bind(this);
         this.change_tick_time = this.change_tick_time.bind(this);
         this.close_tut = this.close_tut.bind(this);
+        this.change_target = this.change_target.bind(this);
+        this.change_start = this.change_start.bind(this);
     }
     componentDidMount() {
         this.update_window_dims();
@@ -492,11 +494,23 @@ export default class GraphDisplay extends React.Component {
         this.setState({ show_tut: false });
     }
 
+    change_start(pos) {
+        this.state.board.grid[this.state.start[0]][this.state.start[1]].start = false;
+        this.setState({ start: pos });
+    }
+
+    change_target(pos) {
+        this.state.board.grid[this.state.target[0]][this.state.target[1]].target = false;
+        this.setState({ target: pos });
+    }
+
+
     render() {
         return (
             <div>
                 {this.state.show_tut ? <Tutorial close={this.close_tut}/> : null}
-                <Grid width={this.state.width} height={this.state.height} 
+                <Grid change_start={this.change_start} change_target={this.change_target}
+                width={this.state.width} height={this.state.height} 
                 searching={this.state.searching} board={this.state.board} 
                 algo={this.state.algo} reset={this.state.reset}/>
                 <GraphSidebar algo={this.state.algo} change_time={this.change_tick_time}

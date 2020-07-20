@@ -13,6 +13,9 @@ const Tutorial = ({ close }) => {
                 <br/>
                 To delete walls, click a wall and drag along wall tiles.
                 <br/>
+                To move either the start or the target squares, click and drag the square.
+                <br/>
+                <br/>
                 For other controls, use the sidebar on the right.
                 <br/>
                 Click the X button on the top right to exit!

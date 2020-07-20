@@ -10,7 +10,9 @@ export default class Grid extends React.Component {
             remove_wall: false,
             click_wall: false,
             click_start: false,
-            click_target: false
+            click_target: false,
+            move_start: false,
+            move_target: false
         }
 
         this.handle_mouse_up = this.handle_mouse_up.bind(this);
@@ -22,9 +24,16 @@ export default class Grid extends React.Component {
         return new Promise(resolve => setTimeout(resolve, msec));
     }
 
+
     async handle_mouse_down() {
         await this.sleep(0);
-        if(this.state.click_wall) {
+        if(this.state.click_start) {
+            this.setState({ move_start: true });
+        }
+        else if(this.state.click_target) {
+            this.setState({ move_target: true });
+        }
+        else if(this.state.click_wall) {
             this.setState({ remove_wall: true });
         }
         else {
@@ -33,10 +42,17 @@ export default class Grid extends React.Component {
     }
 
     handle_mouse_up() {
-        this.setState({ make_wall: false, remove_wall: false });
+        this.setState({ click_start: false, click_target: false, make_wall: false, remove_wall: false, move_start: false, move_target: false });
     }
-    change_click_state(is_wall) {
-        if(is_wall) {
+
+    change_click_state(is_wall, is_start, is_target) {
+        if(is_start) {
+            this.setState({ click_start: true });
+        }
+        else if(is_target) {
+            this.setState({ click_target: true });
+        }
+        else if(is_wall) {
             this.setState({ click_wall: true });
         }
         else {
@@ -57,6 +73,10 @@ export default class Grid extends React.Component {
                 searching={this.props.searching}
                 reset={this.props.reset}
                 tile={this.props.board.grid[i / 50 | 0][i % 50]}
+                move_target={this.state.move_target}
+                move_start={this.state.move_start}
+                change_start={this.props.change_start}
+                change_target={this.props.change_target}
                 make_wall={this.state.make_wall}
                 change={this.change_click_state}
                 remove_wall={this.state.remove_wall}/>);
