@@ -21,7 +21,7 @@ export default class Square extends React.Component {
         return new Promise(resolve => setTimeout(resolve, msec));
     }
     handle_mouse_over() {
-        if(this.props.make_wall && !this.props.searching) {
+        if(this.props.make_wall && !this.props.searching && !this.props.tile.target && !this.props.tile.start) {
             this.setState({ wall: true });
             this.props.tile.wall = true;
         }
@@ -37,7 +37,7 @@ export default class Square extends React.Component {
             this.setState({ wall: false });
             this.props.tile.wall = false;
         }
-        else if(!this.props.searching){
+        else if(!this.props.searching && !this.props.tile.target && !this.props.tile.start){
             this.setState({ wall: true });
             this.props.tile.wall = true;
         }
