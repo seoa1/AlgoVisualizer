@@ -25,9 +25,6 @@ export default class CategorySelect extends React.Component {
             case "sorting":
                 cat_out = "Sorting Algorithms";
                 break;
-            case "traversal":
-                cat_out = "BST Traversal Algorithms";
-                break;
             case "graphsearch":
                 cat_out = "Graph Search Algorithms";
                 break;

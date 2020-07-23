@@ -1,8 +1,6 @@
 import React from 'react';
 import Header from './header';
 import SortingDisplay from './sorting_algos/sorting_display';
-import Tree from './traversal_algos/tree_display.jsx';
-import Grid from './graphsearch_algos/grid';
 import GraphDisplay from './graphsearch_algos/graph_display';
 
 export default class Display extends React.Component {
@@ -26,9 +24,6 @@ export default class Display extends React.Component {
                 {this.state.algo_category === "sorting" ? 
                     <SortingDisplay/> :
                     null}
-                {this.state.algo_category === "traversal" ? 
-                    <Tree />
-                    :null}
                 {this.state.algo_category === "graphsearch" ?
                     <GraphDisplay />:
                     null}
