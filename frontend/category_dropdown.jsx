@@ -16,7 +16,7 @@ const CategoryDropdown = ({change_cat}) => {
     return (
         <div className="cat_dropdown">
             <div onClick={handle_click_s}>Sorting Algorithms</div>
-            <div onClick={handle_click_g}>Graph Search Algorithms</div>
+            <div onClick={handle_click_g}>Pathfinding Algorithms</div>
         </div>
     )
 }
