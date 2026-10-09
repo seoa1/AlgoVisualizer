@@ -1,5 +1,7 @@
 # Algorithm Visualizer
 
+hello there
+
 Try it: <https://andrew-seo.com/AlgoVisualizer/>
 
 Thanks for checking out my algorithm visualizer!  
